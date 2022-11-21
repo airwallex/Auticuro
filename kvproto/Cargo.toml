@@ -1,0 +1,13 @@
+[package]
+name = "kvproto"
+version = "0.1.0"
+edition = "2018"
+build = "build.rs"
+
+[build-dependencies]
+tonic-build = "0.5.2"
+
+[dependencies]
+tonic = "0.5.2"
+prost = "0.8.0"
+

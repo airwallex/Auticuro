@@ -1,0 +1,5 @@
+/target
+.idea
+**/tmp
+/kvproto/src/*.rs
+!/kvproto/src/lib.rs

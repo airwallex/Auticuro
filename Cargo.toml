@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "firm-wallet-service",
+    "firm-wallet-gateway",
+    "kvproto"
+]

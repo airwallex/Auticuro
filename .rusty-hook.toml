@@ -1,0 +1,5 @@
+[hooks]
+pre-commit = "cargo test --release"
+
+[logging]
+verbose = true
