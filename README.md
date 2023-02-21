@@ -92,14 +92,45 @@ __Query Service(OLAP)__
 
 Event streams can be synchronized from PG to BigQuery through CDC, such that analytical requirements can be easily supported.
 
-
 ### Quick start
 
-#### Rust Environment Setup(Ubuntu)
-
+#### Rust Environment Setup
+For Ubuntu
 ```
-# 1. install curl and cmake tool
+# 1. Install tools and set git credentials
 apt-get update -y && apt-get upgrade -y && apt-get install -y build-essential curl cmake
+
+# Set Git Credential (for hologram-protos)
+export CARGO_NET_GIT_FETCH_WITH_CLI=true
+
+# 2. download rust
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --profile=default -y
+
+# 3. set cargo path
+source $HOME/.cargo/env
+
+# 4. install rust nightly
+rustup toolchain install nightly-2022-01-13
+
+# 5. set rust nightly as default
+rustup default nightly-2022-01-13
+
+# 6. install rustfmt component
+rustup component add rustfmt
+```
+
+For MacOS
+```
+# 1. Install tools and set git credentials
+brew install curl
+brew install protobuf
+brew install cmake && brew link cmake
+
+# Install xcode(Ignore if installed)
+xcode-select --install
+
+# Set Git Credential (for hologram-protos)
+export CARGO_NET_GIT_FETCH_WITH_CLI=true
 
 # 2. download rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --profile=default -y
@@ -118,10 +149,25 @@ rustup component add rustfmt
 ```
 
 #### Build Project and Start Service
+Below commands are platform independent, applicable for both Ubuntu and MacOS.
+
+Build 
+```
+cargo build --release
+```
+
+Test
+```
+cargo test --release
+```
 
 To start all 5 raft nodes locally, execute the`run_node.sh` script with a store id:
 
 ```
+# 1. change dir to firm-wallet-service
+cd firm-wallet-service
+
+# 2. Start 5 peers
 sh run_node.sh 1
 sh run_node.sh 2
 sh run_node.sh 3
@@ -135,9 +181,11 @@ Upon execution, cluster configuration, raft log/state, and application state are
 `db_path`, `raft_db_path`, `wallet_db_path` each. For a fresh new start, clear all three databases by deleting files under
 the specified path.
 
+
+
 #### Send Request With gRPCurl
 Refer to the [API Doc](docs/api.md) for more details.
-Todo (Should put consensus and firm-wallet protos in a seperated project from hologram_protos and put the grpcurl example there)
+Todo (Should put consensus protos in a seperated project from hologram_protos and put the grpcurl example there)
 1. Download and install [gRPCurl](https://github.com/fullstorydev/grpcurl) on Linux x86 (see all releases
    [here](https://github.com/fullstorydev/grpcurl/releases))
 
@@ -149,28 +197,30 @@ chmod +x grpcurl
 ```
 
 2. Request example, specify proto path with `--import-path`, proto with `--proto`
+
+Please fetch proto definitions as specified in [API Doc](docs/api.md)
 ```
-grpcurl -plaintext -import-path ./wallet_proto/proto -import-path ./wallet_proto/include -proto balance_operation_servicepb.proto -d '{"dedup_id": "1234567890", "transfer_spec": {"from_account": "tony", "to_account": "glen", "amount": "1234.5"}}'  127.0.0.1:20161 balance_operation_servicepb.BalanceOperationService/Transfer
-grpcurl -plaintext -import-path ./wallet_proto/proto -import-path ./wallet_proto/include -proto balance_operation_servicepb.proto -d '{"dedup_id": "1234567890", "transfer_spec": {"from_account": "tony", "to_account": "glen", "amount": "1234.5"}}'  127.0.0.1:20162 balance_operation_servicepb.BalanceOperationService/Transfer
-grpcurl -plaintext -import-path ./wallet_proto/proto -import-path ./wallet_proto/include -proto balance_operation_servicepb.proto -d '{"dedup_id": "1234567890", "transfer_spec": {"from_account": "tony", "to_account": "glen", "amount": "1234.5"}}'  127.0.0.1:20163 balance_operation_servicepb.BalanceOperationService/Transfer
-grpcurl -plaintext -import-path ./wallet_proto/proto -import-path ./wallet_proto/include -proto balance_operation_servicepb.proto -d '{"dedup_id": "1234567890", "transfer_spec": {"from_account": "tony", "to_account": "glen", "amount": "1234.5"}}'  127.0.0.1:20164 balance_operation_servicepb.BalanceOperationService/Transfer
-grpcurl -plaintext -import-path ./wallet_proto/proto -import-path ./wallet_proto/include -proto balance_operation_servicepb.proto -d '{"dedup_id": "1234567890", "transfer_spec": {"from_account": "tony", "to_account": "glen", "amount": "1234.5"}}'  127.0.0.1:20165 balance_operation_servicepb.BalanceOperationService/Transfer
+grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"dedup_id":"1234567890", "transfer_spec": {"from_account_id": "tony", "to_account_id": "ben", "amount": "1234.5"}}'  127.0.0.1:20161 firm_wallet.balance_operation_servicepb.BalanceOperationService/Transfer
+grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"dedup_id":"1234567890", "transfer_spec": {"from_account_id": "tony", "to_account_id": "ben", "amount": "1234.5"}}'  127.0.0.1:20162 firm_wallet.balance_operation_servicepb.BalanceOperationService/Transfer
+grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"dedup_id":"1234567890", "transfer_spec": {"from_account_id": "tony", "to_account_id": "ben", "amount": "1234.5"}}'  127.0.0.1:20163 firm_wallet.balance_operation_servicepb.BalanceOperationService/Transfer
+grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"dedup_id":"1234567890", "transfer_spec": {"from_account_id": "tony", "to_account_id": "ben", "amount": "1234.5"}}'  127.0.0.1:20164 firm_wallet.balance_operation_servicepb.BalanceOperationService/Transfer
+grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"dedup_id":"1234567890", "transfer_spec": {"from_account_id": "tony", "to_account_id": "ben", "amount": "1234.5"}}'  127.0.0.1:20165 firm_wallet.balance_operation_servicepb.BalanceOperationService/Transfer
 ```
 
 ```
-grpcurl -plaintext -import-path ./wallet_proto/proto -import-path ./wallet_proto/include -proto balance_operation_servicepb.proto -d '{"account": "tony"}'  127.0.0.1:20161 balance_operation_servicepb.BalanceOperationService/QueryBalance
-grpcurl -plaintext -import-path ./wallet_proto/proto -import-path ./wallet_proto/include -proto balance_operation_servicepb.proto -d '{"account": "tony"}'  127.0.0.1:20162 balance_operation_servicepb.BalanceOperationService/QueryBalance
-grpcurl -plaintext -import-path ./wallet_proto/proto -import-path ./wallet_proto/include -proto balance_operation_servicepb.proto -d '{"account": "tony"}'  127.0.0.1:20163 balance_operation_servicepb.BalanceOperationService/QueryBalance
-grpcurl -plaintext -import-path ./wallet_proto/proto -import-path ./wallet_proto/include -proto balance_operation_servicepb.proto -d '{"account": "tony"}'  127.0.0.1:20164 balance_operation_servicepb.BalanceOperationService/QueryBalance
-grpcurl -plaintext -import-path ./wallet_proto/proto -import-path ./wallet_proto/include -proto balance_operation_servicepb.proto -d '{"account": "tony"}'  127.0.0.1:20165 balance_operation_servicepb.BalanceOperationService/QueryBalance
+grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"account_id": "tony"}'  127.0.0.1:20161 firm_wallet.balance_operation_servicepb.BalanceOperationService/QueryBalance
+grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"account_id": "tony"}'  127.0.0.1:20162 firm_wallet.balance_operation_servicepb.BalanceOperationService/QueryBalance
+grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"account_id": "tony"}'  127.0.0.1:20163 firm_wallet.balance_operation_servicepb.BalanceOperationService/QueryBalance
+grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"account_id": "tony"}'  127.0.0.1:20164 firm_wallet.balance_operation_servicepb.BalanceOperationService/QueryBalance
+grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"account_id": "tony"}'  127.0.0.1:20165 firm_wallet.balance_operation_servicepb.BalanceOperationService/QueryBalance
 ```
 
 ```
-grpcurl -plaintext -import-path ./wallet_proto/proto -import-path ./wallet_proto/include -proto internal_servicepb.proto -d '{"first_seq_num": 1, "last_seq_num": 10}'  127.0.0.1:20161 internal_servicepb.InternalService/QueryEvents
-grpcurl -plaintext -import-path ./wallet_proto/proto -import-path ./wallet_proto/include -proto internal_servicepb.proto -d '{"first_seq_num": 1, "last_seq_num": 10}'  127.0.0.1:20162 internal_servicepb.InternalService/QueryEvents
-grpcurl -plaintext -import-path ./wallet_proto/proto -import-path ./wallet_proto/include -proto internal_servicepb.proto -d '{"first_seq_num": 1, "last_seq_num": 10}'  127.0.0.1:20163 internal_servicepb.InternalService/QueryEvents
-grpcurl -plaintext -import-path ./wallet_proto/proto -import-path ./wallet_proto/include -proto internal_servicepb.proto -d '{"first_seq_num": 1, "last_seq_num": 10}'  127.0.0.1:20164 internal_servicepb.InternalService/QueryEvents
-grpcurl -plaintext -import-path ./wallet_proto/proto -import-path ./wallet_proto/include -proto internal_servicepb.proto -d '{"first_seq_num": 1, "last_seq_num": 10}'  127.0.0.1:20165 internal_servicepb.InternalService/QueryEvents
+grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto internal_servicepb.proto  -d '{"first_seq_num": 1, "last_seq_num": 10}'  127.0.0.1:20161 firm_wallet.internal_servicepb.InternalService/QueryEvents
+grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto internal_servicepb.proto  -d '{"first_seq_num": 1, "last_seq_num": 10}'  127.0.0.1:20162 firm_wallet.internal_servicepb.InternalService/QueryEvents
+grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto internal_servicepb.proto  -d '{"first_seq_num": 1, "last_seq_num": 10}'  127.0.0.1:20163 firm_wallet.internal_servicepb.InternalService/QueryEvents
+grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto internal_servicepb.proto  -d '{"first_seq_num": 1, "last_seq_num": 10}'  127.0.0.1:20164 firm_wallet.internal_servicepb.InternalService/QueryEvents
+grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto internal_servicepb.proto  -d '{"first_seq_num": 1, "last_seq_num": 10}'  127.0.0.1:20165 firm_wallet.internal_servicepb.InternalService/QueryEvents
 ```
 
 ### Configurations
