@@ -1,10 +1,10 @@
-# Lightning: A High Performance, Strong Consistent Distributed Wallet Service
+Auticuro: A High Performance, Strong Consistent Distributed Wallet Service
 =========
 [<img alt="docs.rs" src="https://img.shields.io/badge/docs-firm-wallet-service-66c2a5?style=for-the-badge&labelColor=555555&logo=docs.rs" height="20">](https://financial_platform.pages.awx.im/the-hologram/firm-wallet/firm-wallet-service/)
 [<img alt="docs.rs" src="https://img.shields.io/badge/docs-firm-wallet-gateway-66c2a5?style=for-the-badge&labelColor=555555&logo=docs.rs" height="20">](https://financial_platform.pages.awx.im/the-hologram/firm-wallet/firm-wallet-gateway/)
 
 ## Introduction
-Lightning is a high-performance wallet service, leveraging [Raft consensus algorithm](https://raft.github.io/raft.pdf) 
+Auticuro is a high-performance wallet service, leveraging [Raft consensus algorithm](https://raft.github.io/raft.pdf) 
 to achieve both high availability and strong consistency, which could tolerate 2 nodes down in a 5-nodes deployment. 
 With data flowing only from Raft leader to followers, it's naturally an event sourcing system with single source of
 truth well fit for mission-critical financial scenarios.
@@ -16,16 +16,18 @@ PingCAP.
 Transferring money between 2 accounts is a typical use case. With well-modularized underlying consensus support, 
 it's easy to be extended to support more complicated business scenarios.
 
+About the naming -- **Auticuro**: AU (gold in Latin is aurum, which is the chemistry symbol for gold AU) + “curo (Italian for protect)
+
 ## Features
 ### Functional Features
   - Balance operations 
     - ✅ Bilateral money transfer
-    - Batch balance operation (Increase/Decrease balance on more than accounts atomically)
+    - ✅ Batch balance operation (Increase/Decrease balance on more than accounts atomically)
   - Account management operations
-    - Create/Delete/Lock/Unlock an account
-    - Change the upper/lower balance limit of an account
-  - Support account hierarchy
-  - Support multi asset class (cash, crypto, coupon…)
+    - ✅ Create/Delete/Lock/Unlock an account
+    - ✅ Change the upper/lower balance limit of an account
+- ✅ Support multi asset class (cash, crypto, coupon…)
+- Support account hierarchy(TBD)
 
 Currently, the bilateral money transfer is ready, other features are on the road map.
 
@@ -42,6 +44,10 @@ Currently, the bilateral money transfer is ready, other features are on the road
 - **Horizontal scalability**
 
    The horizontal scalability can be achieved with the help of an in-house workflow engine(Marker)
+
+
+## Quick start
+See details [here](docs/quickstart.md)
 
 ## Documentation
 ### Architecture
@@ -70,7 +76,7 @@ Raft(index, offset)) and sends it back to the client.
 
 ### Event Sourcing with CQRS
 
-<img src="resources/Event Sourcing.svg" width = "600" height = "650" alt="图片名称" align=center />
+<img src="resources/Event Sourcing.svg" width = "600" height = "650" alt="Event Sourcing" align=center />
 
 The design follows the CQRS system to segregate writing and reading.
 
@@ -92,172 +98,8 @@ __Query Service(OLAP)__
 
 Event streams can be synchronized from PG to BigQuery through CDC, such that analytical requirements can be easily supported.
 
-### Quick start
-
-#### Rust Environment Setup
-For Ubuntu
-```
-# 1. Install tools and set git credentials
-apt-get update -y && apt-get upgrade -y && apt-get install -y build-essential curl cmake
-
-# Set Git Credential (for hologram-protos)
-export CARGO_NET_GIT_FETCH_WITH_CLI=true
-
-# 2. download rust
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --profile=default -y
-
-# 3. set cargo path
-source $HOME/.cargo/env
-
-# 4. install rust nightly
-rustup toolchain install nightly-2022-01-13
-
-# 5. set rust nightly as default
-rustup default nightly-2022-01-13
-
-# 6. install rustfmt component
-rustup component add rustfmt
-```
-
-For MacOS
-```
-# 1. Install tools and set git credentials
-brew install curl
-brew install protobuf
-brew install cmake && brew link cmake
-
-# Install xcode(Ignore if installed)
-xcode-select --install
-
-# Set Git Credential (for hologram-protos)
-export CARGO_NET_GIT_FETCH_WITH_CLI=true
-
-# 2. download rust
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --profile=default -y
-
-# 3. set cargo path
-source $HOME/.cargo/env
-
-# 4. install rust nightly
-rustup toolchain install nightly-2022-01-13
-
-# 5. set rust nightly as default
-rustup default nightly-2022-01-13
-
-# 6. install rustfmt component
-rustup component add rustfmt
-```
-
-#### Build Project and Start Service
-Below commands are platform independent, applicable for both Ubuntu and MacOS.
-
-Build 
-```
-cargo build --release
-```
-
-Test
-```
-cargo test --release
-```
-
-To start all 5 raft nodes locally, execute the`run_node.sh` script with a store id:
-
-```
-# 1. change dir to firm-wallet-service
-cd firm-wallet-service
-
-# 2. Start 5 peers
-sh run_node.sh 1
-sh run_node.sh 2
-sh run_node.sh 3
-sh run_node.sh 4
-sh run_node.sh 5
-```
-
-Otherwise, please update the corresponding `peer_<id>` and `status_address` for each service.
-
-Upon execution, cluster configuration, raft log/state, and application state are persisted to RocksDB specified by
-`db_path`, `raft_db_path`, `wallet_db_path` each. For a fresh new start, clear all three databases by deleting files under
-the specified path.
-
-
-
-#### Send Request With gRPCurl
-Refer to the [API Doc](docs/api.md) for more details.
-Todo (Should put consensus protos in a seperated project from hologram_protos and put the grpcurl example there)
-1. Download and install [gRPCurl](https://github.com/fullstorydev/grpcurl) on Linux x86 (see all releases
-   [here](https://github.com/fullstorydev/grpcurl/releases))
-
-```
-wget https://github.com/fullstorydev/grpcurl/releases/download/v1.8.5/grpcurl_1.8.5_linux_x86_64.tar.gz --no-check-certificate
-tar -xvf grpcurl_1.8.5_linux_x86_64.tar.gz
-chmod +x grpcurl
-./grpcurl --help
-```
-
-2. Request example, specify proto path with `--import-path`, proto with `--proto`
-
-Please fetch proto definitions as specified in [API Doc](docs/api.md)
-```
-grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"dedup_id":"1234567890", "transfer_spec": {"from_account_id": "tony", "to_account_id": "ben", "amount": "1234.5"}}'  127.0.0.1:20161 firm_wallet.balance_operation_servicepb.BalanceOperationService/Transfer
-grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"dedup_id":"1234567890", "transfer_spec": {"from_account_id": "tony", "to_account_id": "ben", "amount": "1234.5"}}'  127.0.0.1:20162 firm_wallet.balance_operation_servicepb.BalanceOperationService/Transfer
-grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"dedup_id":"1234567890", "transfer_spec": {"from_account_id": "tony", "to_account_id": "ben", "amount": "1234.5"}}'  127.0.0.1:20163 firm_wallet.balance_operation_servicepb.BalanceOperationService/Transfer
-grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"dedup_id":"1234567890", "transfer_spec": {"from_account_id": "tony", "to_account_id": "ben", "amount": "1234.5"}}'  127.0.0.1:20164 firm_wallet.balance_operation_servicepb.BalanceOperationService/Transfer
-grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"dedup_id":"1234567890", "transfer_spec": {"from_account_id": "tony", "to_account_id": "ben", "amount": "1234.5"}}'  127.0.0.1:20165 firm_wallet.balance_operation_servicepb.BalanceOperationService/Transfer
-```
-
-```
-grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"account_id": "tony"}'  127.0.0.1:20161 firm_wallet.balance_operation_servicepb.BalanceOperationService/QueryBalance
-grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"account_id": "tony"}'  127.0.0.1:20162 firm_wallet.balance_operation_servicepb.BalanceOperationService/QueryBalance
-grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"account_id": "tony"}'  127.0.0.1:20163 firm_wallet.balance_operation_servicepb.BalanceOperationService/QueryBalance
-grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"account_id": "tony"}'  127.0.0.1:20164 firm_wallet.balance_operation_servicepb.BalanceOperationService/QueryBalance
-grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"account_id": "tony"}'  127.0.0.1:20165 firm_wallet.balance_operation_servicepb.BalanceOperationService/QueryBalance
-```
-
-```
-grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto internal_servicepb.proto  -d '{"first_seq_num": 1, "last_seq_num": 10}'  127.0.0.1:20161 firm_wallet.internal_servicepb.InternalService/QueryEvents
-grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto internal_servicepb.proto  -d '{"first_seq_num": 1, "last_seq_num": 10}'  127.0.0.1:20162 firm_wallet.internal_servicepb.InternalService/QueryEvents
-grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto internal_servicepb.proto  -d '{"first_seq_num": 1, "last_seq_num": 10}'  127.0.0.1:20163 firm_wallet.internal_servicepb.InternalService/QueryEvents
-grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto internal_servicepb.proto  -d '{"first_seq_num": 1, "last_seq_num": 10}'  127.0.0.1:20164 firm_wallet.internal_servicepb.InternalService/QueryEvents
-grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto internal_servicepb.proto  -d '{"first_seq_num": 1, "last_seq_num": 10}'  127.0.0.1:20165 firm_wallet.internal_servicepb.InternalService/QueryEvents
-```
-
-### Configurations
-#### Wallet Service Configuration
-| Wallet Service configuration |                  Description                   |  Default Value  |
-|:----------------------------:|:----------------------------------------------:|:---------------:|
-|    query_events_max_count    | Max queried events count of QueryEventsRequest |      1000       |
-
-- Tuning the Wallet Service Configuration
-
-    `export query_events_max_count=100`
-
-
-#### GC Configuration
-The wallet's earliest entries(by seq_num) will be truncated if the GC is enabled and exceeds the `event_log_gc_count_limit`, currently
-the GC is disabled by default.
-
-- How to enable GC
-
-   ```export enable_gc_of_event_log=true```
-
-
-- Tuning the GC configurations
-
-  Please remember to export gc configuration with gc **enabled**.
-
-  ```
-   export enable_gc_of_event_log=true
-   export event_log_gc_count_limit=10000
-  ```
-
-|             GC configuration              |                                     Description                                     | Default Value |
-|:-----------------------------------------:|:-----------------------------------------------------------------------------------:|:-------------:|
-| event_log_gc_poll_interval_millis(millis) |                  The poll interval if gc thread find gc not needed                  |     1000      |
-|       event_log_gc_count_limit(u64)       |                     Max entries that can be stored in rocks db                      |  50 million   |
-|       event_log_gc_batch_size(u64)        |                   Num of seq_nums to be deleted in a delete batch                   |      200      |
-|       event_log_gc_percentage(f64)        | Each time event_log_gc_percentage * event_log_gc_count_limit events will be deleted |      0.1      |
+## Configurations
+See details [here](docs/configuration.md)
 
 ## Performance
 
@@ -268,16 +110,20 @@ the GC is disabled by default.
 #### Test Strategy
 
 A rust-based performance testing tool was built for the wallet service, the tool will start multiple coroutines and
-send requests sequentially to the server. See details of the test tool [here](https://gitlab.awx.im/amanda.tian/concensus-stress-test).
+send requests sequentially to the server.
 
 #### Test Result
-
 |RPC type|Concurrency |Metadata Payload|TPS|Avg. Latency (ms)|p99 Latency (ms)|
 |:---:|:---:|:---:|:---:|:---:|:---:|
 |     Transfer     |100|128B|13.5k|13|81|
 
+- Latency Distribution vs Throughput
 
-### Monitoring
+  **P99 latency < 20 ms @ TPS=10K**
+
+  <img alt="latency distribution" src="resources/latency_distribution.gif" height="400">
+
+## Monitoring
 #### Http Metrics Server
 
 An HTTP metrics server is built on each node to

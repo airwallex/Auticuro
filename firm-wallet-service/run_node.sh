@@ -49,10 +49,9 @@ export status_address_5=0.0.0.0:20215
 # log level of consensus module,
 # valid value is `trace`, `debug`, `info`, `warn`, `error`, `critical`.
 # if not set, fallback to default value `debug`.
-export log_level="debug"
+export log_level="info"
 
 export log_consumer_buffer_size=1024
-# Build the project and run service
-cargo build --release
+# Run service
 export RUST_BACKTRACE=1
 ../target/release/firm-wallet-service

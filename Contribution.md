@@ -1,4 +1,4 @@
-## Contributing to Lightning
+## Contributing to Auticuro
 
 ### Legal requirements
 In order to protect both you and ourselves, you will need to sign the CLA
