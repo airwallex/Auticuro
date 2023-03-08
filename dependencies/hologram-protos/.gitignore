@@ -1,0 +1,32 @@
+.idea/
+
+target/
+Cargo.lock
+
+# ignore directories under src/ expect for:
+# 1. proto directory
+# 2. the mod.rs file in other directories
+src/*/
+!src/proto
+!src/*/mod.rs
+
+# ignore .rs file in src/, expect for the lib.rs
+src/*.rs
+!src/lib.rs
+
+
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/

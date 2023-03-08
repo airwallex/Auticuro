@@ -1,0 +1,53 @@
+syntax = "proto3";
+package firm_wallet.accountpb;
+
+message BalanceLimit {
+  string upper = 1;
+  string lower = 2;
+}
+
+message AssetClass {
+  oneof asset_class {
+    Cash cash = 1;
+  }
+
+  message Cash {
+    string currency = 1;
+  }
+}
+
+message AccountConfig {
+  BalanceLimit balance_limit = 1;
+
+  // AssetClass should be the same when balance operations happens among wallet accounts
+  // New Asse
+  // tClass, like crypto, coupon can be added to AssetClass later
+  AssetClass asset_class = 2;
+}
+
+message Balance {
+  // Total balance = Available balance + Reserved balance
+  // NB. Total balance and Reserved balance are derived values
+
+  // Reserved balance = Sum(values in reservations map)
+  // E.g.
+  // 1. Initially, balance of account A(100) = available balance(80) + reserved balance(20)
+  // 2. Reserve 20 in account A
+  // 3. balance of account A(100) = available balance(60) + reserved balance(40)
+  string available = 1;
+  map<string, string> reservations = 2; // reservation_id -> reservation amount
+}
+
+enum AccountState {
+  InvalidState = 0;
+  Deleted = 1;
+  Locked = 2;
+  Normal = 3;
+}
+
+message Account {
+  AccountConfig config = 1;
+  Balance balance = 2;
+  AccountState state = 3;
+  string account_id = 4;
+}

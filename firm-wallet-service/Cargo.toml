@@ -17,11 +17,11 @@ prometheus-static-metric = "0.5"
 slog = { version = "2.2", features = ["max_level_trace"] }
 slog-global = { version = "0.1", git = "https://github.com/breeswish/slog-global.git", rev = "d592f88e4dbba5eb439998463054f1a44fbf17b9" }
 grpcio = { version = "0.9",  default-features = false, features = ["openssl-vendored"] }
-hologram_kv = { version = "0.1.0", git = "https://gitlab.awx.im/financial_platform/the-hologram/consensus.git", branch = "master" }
-tikv-util = { version = "0.1.0", git = "https://gitlab.awx.im/financial_platform/the-hologram/consensus.git", branch = "master" }
+hologram_kv = { version = "0.1.0", path = "../dependencies/tiny-mq" }
+tikv-util = { version = "0.1.0", path = "../dependencies/tiny-mq/tikv-util" }
 bigdecimal = "0.3.0"
 thiserror = "1.0"
-hologram_protos ={ version = "0.1.0", git ="https://gitlab.awx.im/financial_platform/the-hologram/hologram-protos.git", branch ="master"}
+hologram_protos ={ version = "0.1.0", path ="../dependencies/hologram-protos"}
 rand = "0.8"
 
 [dev-dependencies]

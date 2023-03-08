@@ -1,0 +1,25 @@
+[package]
+name = "kvproto"
+version = "0.1.0"
+edition = "2018"
+build = "build.rs"
+
+[features]
+default = ["protobuf-codec"]
+protobuf-codec = [
+    "protobuf-build/grpcio-protobuf-codec",
+    "raft-proto/protobuf-codec",
+    "grpcio/protobuf-codec"
+]
+
+[build-dependencies]
+protobuf-build = { version = "0.12", default-features = false }
+
+[dependencies]
+protobuf = "2.8"
+prost = { version = "0.7" }
+prost-derive = { version = "0.7" }
+futures = "0.3"
+lazy_static = { version = "1" }
+grpcio = { version = "0.9", default-features = false, features = ["secure", "use-bindgen"] }
+raft-proto = { git = "https://github.com/GlenGeng/raft-rs.git", default-features = false, branch = "awx" }

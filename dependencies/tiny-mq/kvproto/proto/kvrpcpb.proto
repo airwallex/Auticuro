@@ -1,0 +1,86 @@
+syntax = "proto3";
+package kvrpcpb;
+
+import "metapb.proto";
+import "errorpb.proto";
+import "gogoproto/gogo.proto";
+import "rustproto.proto";
+import "eraftpb.proto";
+
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (rustproto.lite_runtime_all) = true;
+
+// Fetch raft log entries in [start, end]
+message QueryRaftLogEntriesRequest {
+  uint64 start = 1;
+  uint64 end = 2;
+}
+
+message QueryRaftLogEntriesResponse {
+  repeated eraftpb.Entry entries = 1;
+  uint64 first_log_index = 2;
+  uint64 last_log_index = 3;
+  string error = 4;
+}
+
+message MessageQueueRequest {
+  Context context = 1;
+  bytes payload = 2;
+}
+
+message MessageQueueResponse {
+  // each raft log entry contains a batch of MessageQueueRequest,
+  // (index, offset) tells the precise location of the MessageQueueRequest.
+  uint64 index = 1;
+  uint64 offset = 3;
+  // When everything is fine, error is "OK".
+  string error = 2;
+}
+
+message ProbeRequest {}
+
+message ProbeResponse {
+  metapb.Region region = 1;
+  metapb.Peer leader = 2;
+  string error = 3;
+}
+
+// Helper messages.
+
+// Miscellaneous metadata attached to most requests.
+message Context {
+  // for a single raft KV store, region_id is always 1.
+  uint64 region_id = 1;
+//  metapb.RegionEpoch region_epoch = 2;
+  metapb.Peer peer = 3;
+  uint64 term = 5;
+//  CommandPri priority = 6;
+//  IsolationLevel isolation_level = 7;
+//  bool not_fill_cache = 8;
+//  bool sync_log = 9;
+
+  // True means execution time statistics should be recorded and returned.
+//  bool record_time_stat = 10;
+  // True means RocksDB scan statistics should be recorded and returned.
+//  bool record_scan_stat = 11;
+
+//  bool replica_read = 12;
+//  repeated uint64 resolved_locks = 13;
+//  uint64 max_execution_duration_ms = 14;
+
+  // After a region applies to `applied_index`, we can get a
+  // snapshot for the region even if the peer is a follower.
+//  uint64 applied_index = 15;
+  // A hint for TiKV to schedule tasks more fairly. Query with same task ID
+  // may share same priority and resource quota.
+//  uint64 task_id = 16;
+
+  // Not required to read the most up-to-date data, replicas with `safe_ts` >= `start_ts`
+  // can handle read request directly
+//  bool stale_read = 17;
+
+  // Any additional serialized information about the request.
+//  bytes resource_group_tag = 18;
+}

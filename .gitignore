@@ -2,4 +2,4 @@
 .idea
 **/tmp
 /kvproto/src/*.rs
-!/kvproto/src/lib.rs
+!/firm-wallet-gateway/kvproto/src/lib.rs

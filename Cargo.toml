@@ -2,5 +2,7 @@
 members = [
     "firm-wallet-service",
     "firm-wallet-gateway",
-    "kvproto"
+    "dependencies/tiny-mq",
+    "dependencies/hologram-protos",
+    "dependencies/infra-common"
 ]

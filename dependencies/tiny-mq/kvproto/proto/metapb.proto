@@ -1,0 +1,39 @@
+syntax = "proto3";
+package metapb;
+
+message RegionEpoch {
+  // Conf change version, auto increment when add or remove peer
+  uint64 conf_ver = 1;
+  // Region version, auto increment when split or merge
+  uint64 version = 2;
+}
+
+message Region {
+  uint64 id = 1;
+  // Region key range [start_key, end_key).
+  bytes start_key = 2;
+  bytes end_key = 3;
+  RegionEpoch region_epoch = 4;
+  repeated Peer peers = 5;
+}
+
+enum PeerRole {
+  // Voter -> Voter
+  Voter = 0;
+  // Learner/None -> Learner
+  Learner = 1;
+  // Learner/None -> Voter
+  IncomingVoter = 2;
+  // Voter -> Learner
+  DemotingVoter = 3;
+  // We forbid Voter -> None, it can introduce unavailability as discussed in
+  // etcd-io/etcd#7625
+  // Learner -> None can be apply directly, doesn't need to be stored as
+  // joint state.
+}
+
+message Peer {
+  uint64 id = 1;
+  uint64 store_id = 2;
+  PeerRole role = 3;
+}

@@ -1,0 +1,27 @@
+[package]
+name = "hologram_protos"
+version = "0.1.0"
+edition = "2018"
+build = "build.rs"
+
+[features]
+default = ["protobuf-codec"]
+protobuf-codec = [
+    "protobuf-build/grpcio-protobuf-codec",
+    "grpcio/protobuf-codec"
+]
+
+[build-dependencies]
+tonic-build = "0.5.2"
+prost-serde = "0.3.0"
+protobuf-build = { version = "0.12", default-features = false }
+
+[dependencies]
+tonic = "0.5.2"
+prost = "0.8.0"
+prost-derive = "0.8.0"
+serde = "1.0"
+protobuf = "2"
+grpcio = { version = "0.9", default-features = false, features = ["secure", "use-bindgen", "openssl-vendored"] }
+futures = "0.3"
+

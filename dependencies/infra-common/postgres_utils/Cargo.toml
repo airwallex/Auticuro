@@ -1,0 +1,26 @@
+[package]
+name = "postgres_utils"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "postgres_utils"
+path = "src/lib.rs"
+
+[dependencies]
+
+# r2d2 postgres conneciton manager
+r2d2_postgres = "0.18.1"
+
+# logging
+tracing = "0.1"
+tracing-subscriber = "0.3.9"
+
+# tools
+dotenv = "0.15.0"
+crossbeam = "0.8.1"
+
+# error
+thiserror = "1.0"
+

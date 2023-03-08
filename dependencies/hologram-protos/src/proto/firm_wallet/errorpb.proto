@@ -1,0 +1,17 @@
+syntax = "proto3";
+package firm_wallet.errorpb;
+
+message OtherError {
+    string reason = 1;
+}
+
+message NotLeader {
+  string message = 1;
+}
+
+message Error {
+  oneof error {
+    NotLeader not_leader = 1;
+    OtherError other_error = 2;
+  }
+}

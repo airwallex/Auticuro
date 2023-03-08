@@ -1,0 +1,178 @@
+syntax = "proto3";
+package raft_cmdpb;
+
+import "metapb.proto";
+import "errorpb.proto";
+import "eraftpb.proto";
+import "kvrpcpb.proto";
+import "rustproto.proto";
+
+option (rustproto.lite_runtime_all) = true;
+
+enum CmdType {
+  Invalid = 0;
+//  Get = 1;
+//  Put = 3;
+//  Delete = 4;
+//  Transfer = 5;
+  MessageQueue = 6;
+//  Snap = 5;
+//  Prewrite = 6;
+//  DeleteRange = 7;
+//  IngestSST = 8;
+//  ReadIndex = 9;
+}
+
+message Request {
+  CmdType cmd_type = 1;
+//  GetRequest get = 2;
+//  PutRequest put = 4;
+//  DeleteRequest delete = 5;
+  kvrpcpb.MessageQueueRequest message_queue = 7;
+}
+
+message Response {
+  CmdType cmd_type = 1;
+//  GetResponse get = 2;
+//  PutResponse put = 4;
+//  DeleteResponse delete = 5;
+  kvrpcpb.MessageQueueResponse message_queue = 7;
+}
+
+message CompactLogRequest {
+  uint64 compact_index = 1;
+  uint64 compact_term = 2;
+}
+
+message CompactLogResponse {}
+
+enum AdminCmdType {
+  InvalidAdmin = 0;
+//  ChangePeer = 1;
+//  // Use `BatchSplit` instead.
+//  Split = 2 [deprecated=true];
+  CompactLog = 3;
+//  TransferLeader = 4;
+//  ComputeHash = 5;
+//  VerifyHash = 6;
+//  PrepareMerge = 7;
+//  CommitMerge = 8;
+//  RollbackMerge = 9;
+//  BatchSplit = 10;
+//  ChangePeerV2 = 11;
+}
+
+message AdminRequest {
+  AdminCmdType cmd_type = 1;
+//  ChangePeerRequest change_peer = 2;
+//  SplitRequest split = 3 [deprecated=true];
+  CompactLogRequest compact_log = 4;
+//  TransferLeaderRequest transfer_leader = 5;
+//  VerifyHashRequest verify_hash = 6;
+//  PrepareMergeRequest prepare_merge = 7;
+//  CommitMergeRequest commit_merge = 8;
+//  RollbackMergeRequest rollback_merge = 9;
+//  BatchSplitRequest splits = 10;
+//  ChangePeerV2Request change_peer_v2 = 11;
+//  ComputeHashRequest compute_hash = 12;
+}
+
+message AdminResponse {
+  AdminCmdType cmd_type = 1;
+//  ChangePeerResponse change_peer = 2;
+//  SplitResponse split = 3 [deprecated=true];
+  CompactLogResponse compact_log = 4;
+//  TransferLeaderResponse transfer_leader = 5;
+//  VerifyHashResponse verify_hash = 6;
+//  PrepareMergeResponse prepare_merge = 7;
+//  CommitMergeResponse commit_merge = 8;
+//  RollbackMergeResponse rollback_merge = 9;
+//  BatchSplitResponse splits = 10;
+//  ChangePeerV2Response change_peer_v2 = 11;
+}
+
+// For get the leader of the region.
+message RegionLeaderRequest {}
+
+message RegionLeaderResponse {
+  metapb.Peer leader = 1;
+}
+
+// For getting more information of the region.
+// We add some admin operations (ChangePeer, Split...) into the pb job list,
+// then pd server will peek the first one, handle it and then pop it from the job lib.
+// But sometimes, the pd server may crash before popping. When another pd server
+// starts and finds the job is running but not finished, it will first check whether
+// the raft server already has handled this job.
+// E,g, for ChangePeer, if we add Peer10 into region1 and find region1 has already had
+// Peer10, we can think this ChangePeer is finished, and can pop this job from job list
+// directly.
+message RegionDetailRequest {}
+
+message RegionDetailResponse {
+  metapb.Region region = 1;
+  metapb.Peer leader = 2;
+}
+
+
+enum StatusCmdType {
+  InvalidStatus = 0;
+  RegionLeader = 1;
+  RegionDetail = 2;
+}
+
+message StatusRequest {
+  StatusCmdType cmd_type = 1;
+  RegionLeaderRequest region_leader = 2;
+  RegionDetailRequest region_detail = 3;
+}
+
+message StatusResponse {
+  StatusCmdType cmd_type = 1;
+  RegionLeaderResponse region_leader = 2;
+  RegionDetailResponse region_detail = 3;
+}
+
+message RaftRequestHeader {
+  uint64 region_id = 1;
+  metapb.Peer peer = 2;
+  // true for read linearization
+//  bool read_quorum = 3;
+  // 16 bytes, to distinguish request.
+  bytes uuid = 4;
+
+//  metapb.RegionEpoch region_epoch = 5;
+  uint64 term = 6;
+
+//  bool sync_log = 7;
+//  bool replica_read = 8;
+
+  // Read requests can be responsed directly after the Raft applys to `applied_index`.
+//  uint64 applied_index = 9;
+
+  // Custom flags for this raft request.
+//  uint64 flags = 10;
+//  bytes flag_data = 11;
+}
+
+message RaftResponseHeader {
+  errorpb.Error error = 1;
+  bytes uuid = 2;
+  uint64 current_term = 3;
+}
+
+message RaftCmdRequest {
+  RaftRequestHeader header = 1;
+  // We can't enclose normal requests and administrator request
+  // at same time.
+  repeated Request requests = 2;
+  AdminRequest admin_request = 3;
+  StatusRequest status_request = 4;
+}
+
+message RaftCmdResponse {
+  RaftResponseHeader header = 1;
+  repeated Response responses = 2;
+  AdminResponse admin_response = 3;
+  StatusResponse status_response = 4;
+}

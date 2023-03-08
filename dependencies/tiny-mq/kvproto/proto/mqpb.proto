@@ -1,0 +1,9 @@
+syntax = "proto3";
+package mq;
+
+import "raft_serverpb.proto";
+import "kvrpcpb.proto";
+
+service Mq {
+  rpc MessageQueue(kvrpcpb.MessageQueueRequest) returns (kvrpcpb.MessageQueueResponse) {}
+}

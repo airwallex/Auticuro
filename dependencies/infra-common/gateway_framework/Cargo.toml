@@ -1,17 +1,17 @@
 [package]
-name = "firm-wallet-gateway"
+name = "gateway_framework"
 authors = ["Haoran.Xuan@airwallex.com"]
 version = "0.1.0"
 edition = "2018"
 
-[[bin]]
-name = "firm-wallet-gateway"
-path = "src/main.rs"
+[lib]
+name = "gateway_framework"
+path = "src/lib.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
-hologram_protos ={ version = "0.1.0", path ="../dependencies/hologram-protos"}
-gateway_framework ={ version = "0.1.0", path = "../dependencies/infra-common/gateway_framework"}
+kvproto_tonic = { path = "../kvproto" }
+hologram_protos ={ version = "0.1.0", path ="../../hologram-protos"}
 
 # tokio async tool
 tokio = { version = "1.17", features = ["rt", "macros", "rt-multi-thread"] }

@@ -1,0 +1,140 @@
+syntax = "proto3";
+package firm_wallet.balance_operation_servicepb;
+import "firm_wallet/accountpb.proto";
+import "firm_wallet/errorpb.proto";
+import "firm_wallet/commonpb.proto";
+
+service BalanceOperationService {
+  rpc Transfer(TransferRequest) returns (TransferResponse) {}
+  rpc BatchBalanceOperation(BatchBalanceOperationRequest) returns (BatchBalanceOperationResponse) {}
+  rpc Reserve(ReserveRequest) returns (ReserveResponse) {}
+  rpc Release(ReleaseRequest) returns (ReleaseResponse) {}
+
+  // Query interfaces
+  rpc QueryBalance(QueryBalanceRequest) returns (QueryBalanceResponse) {}
+}
+
+// Incompatible asset_class
+message InvalidAccountState {
+  accountpb.AccountState state = 1;
+}
+message BalanceLimitExceeded {
+  accountpb.BalanceLimit limit = 1;
+}
+
+message AccountNotExist {
+  string account_id = 1;
+}
+
+message IncompatibleAssetClass {
+  accountpb.AssetClass lhs = 1;
+  accountpb.AssetClass rhs = 2;
+}
+
+message BalanceChange {
+  string account_id = 1;
+  accountpb.Balance prev_balance = 2;
+  accountpb.Balance curr_balance = 3;
+}
+
+message TransferRequest {
+  string dedup_id = 1;
+  TransferSpec transfer_spec = 2;
+
+  // TransferSpec ensures debit amount == credit amount
+  message TransferSpec {
+    string amount = 1;
+    string from_account_id = 2;
+    string to_account_id = 3;
+    string metadata = 4;
+  }
+}
+
+message TransferResponse {
+  errorpb.Error error = 1;
+  commonpb.ResponseHeader header = 2;
+  TransferRequest request = 3;
+  BalanceChange from = 4;
+  BalanceChange to = 5;
+}
+
+message TransferEvent {
+  TransferResponse response = 1;
+}
+
+message BatchBalanceOperationRequest {
+  string dedup_id = 1;
+  repeated BalanceOperationSpec balance_operation_spec = 2;
+
+  // This will have more flexible support for balance operations happened among more than 2 accounts
+  message BalanceOperationSpec {
+    string account_id = 1;
+    string amount = 2;
+  }
+}
+
+message BatchBalanceOperationResponse {
+  errorpb.Error error = 1;
+  commonpb.ResponseHeader header = 2;
+  BatchBalanceOperationRequest request = 3;
+  repeated BalanceChange balance_changes = 4;
+}
+
+message BatchBalanceOperationEvent {
+  BatchBalanceOperationResponse response = 1;
+}
+
+message ReserveRequest {
+  string dedup_id = 1;
+  string reservation_id = 2;
+  string account_id = 3;
+  string amount = 4;
+}
+
+message ReserveResponse {
+  errorpb.Error error = 1;
+  commonpb.ResponseHeader header = 2;
+  ReserveRequest request = 3;
+  accountpb.Balance prev_balance = 4;
+  accountpb.Balance curr_balance = 5;
+}
+
+message ReserveEvent {
+  ReserveResponse response = 1;
+}
+
+message ReleaseRequest {
+  string dedup_id = 1;
+  string reservation_id = 2;
+  string amount = 3; // If not provided, release all the remaining; otherwise, release the specified amount from reserved to available
+  string account_id = 4;
+}
+
+message ReleaseResponse {
+  errorpb.Error error = 1;
+  commonpb.ResponseHeader header = 2;
+  ReleaseRequest request = 3;
+  accountpb.Balance prev_balance = 4;
+  accountpb.Balance curr_balance = 5;
+}
+
+message ReleaseEvent {
+  ReleaseResponse response = 1;
+}
+
+/**
+ * Query Interface
+ */
+message QueryBalanceRequest {
+  string account_id = 1;
+  uint64 seq_num = 2;    // If provided, will get response with event's seq_num >= request's seq_num guarantee or Error
+}
+
+message QueryBalanceResponse {
+  errorpb.Error error = 1;
+  // caller use events seq_num to identify the view the balance is read from.
+  uint64 seq_num = 2;
+
+  string account_id = 3;
+  accountpb.Balance balance = 4;
+}

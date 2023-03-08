@@ -1,0 +1,11 @@
+[package]
+name = "infra-common"
+version = "0.1.0"
+authors = ["Amanda.Tian@airwallex.com"]
+edition = "2018"
+
+[dependencies]
+postgres_utils = {version = "0.1.0", path = "postgres_utils" }
+gateway_framework = {version = "0.1.0", path = "gateway_framework"}
+kvproto_tonic = {version = "0.1.0", path = "kvproto"}
+

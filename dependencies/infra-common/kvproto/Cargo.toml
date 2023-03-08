@@ -1,5 +1,5 @@
 [package]
-name = "kvproto"
+name = "kvproto_tonic"
 version = "0.1.0"
 edition = "2018"
 build = "build.rs"

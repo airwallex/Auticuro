@@ -1,0 +1,96 @@
+syntax = "proto3";
+package firm_wallet.internal_servicepb;
+import "firm_wallet/balance_operation_servicepb.proto";
+import "firm_wallet/account_management_servicepb.proto";
+import "firm_wallet/errorpb.proto";
+
+service InternalService {
+  rpc QueryEvents(QueryEventsRequest) returns (QueryEventsResponse) {}
+}
+
+message LogTruncated {}
+
+message Error {
+  oneof error {
+    errorpb.OtherError other_error = 1;
+    LogTruncated log_truncated = 2;
+  }
+}
+
+// Query Events in the events stream whose seq_num is within [first_seq_num, last_seq_num], and seq_num is guaranteed to be continuous
+message QueryEventsRequest {
+  uint64 first_seq_num = 1;
+  uint64 last_seq_num = 2;
+}
+
+// Query Events response contains continuous events whose seq_num is within [first_seq_num, last_seq_num]
+message QueryEventsResponse {
+  Error error = 1;
+
+  // The first_seq_num of the replied events
+  uint64 first_seq_num = 2;
+  // The last_seq_num of the replied events
+  uint64 last_seq_num = 3;
+
+  repeated Event events = 4;
+
+  uint64 persisted_first_seq_num = 5;
+
+  uint64 persisted_last_seq_num = 6;
+}
+
+/**
+ * Internal Command/Event
+ */
+message CommandHeader {
+  string command_id = 1;
+  uint64 process_time_in_sec = 2;
+}
+
+message CommandPayload {
+  oneof request {
+    balance_operation_servicepb.TransferRequest transfer_request = 2;
+    balance_operation_servicepb.BatchBalanceOperationRequest batch_balance_operation_request = 3;
+    balance_operation_servicepb.ReserveRequest reserve_request = 4;
+    balance_operation_servicepb.ReleaseRequest release_request = 5;
+
+    account_management_servicepb.CreateAccountRequest create_account_request  = 21;
+    account_management_servicepb.DeleteAccountRequest delete_account_request  = 22;
+    account_management_servicepb.LockAccountRequest lock_account_request  = 23;
+    account_management_servicepb.UnlockAccountRequest unlock_account_request  = 24;
+    account_management_servicepb.UpdateAccountConfigRequest update_account_config_request = 25;
+  }
+}
+
+message Command {
+  CommandHeader header = 1;
+  CommandPayload payload = 2;
+}
+
+message EventHeader {
+  uint64 seq_num = 1;
+  uint64 log_index = 2;
+  uint64 offset = 3;
+  string command_id = 4;
+  uint64 process_time_in_sec = 5;
+}
+
+message EventPayload {
+  oneof event {
+    balance_operation_servicepb.TransferEvent transfer_event = 2;
+    balance_operation_servicepb.BatchBalanceOperationEvent batch_balance_operation_event = 3;
+    balance_operation_servicepb.ReserveEvent reserve_event = 4;
+    balance_operation_servicepb.ReleaseEvent release_event = 5;
+
+    account_management_servicepb.AccountCreatedEvent account_created_event  = 21;
+    account_management_servicepb.AccountDeletedEvent account_deleted_event  = 22;
+    account_management_servicepb.AccountLockedEvent account_locked_event  = 23;
+    account_management_servicepb.AccountUnlockedEvent account_unlock_event  = 24;
+    account_management_servicepb.AccountConfigUpdatedEvent account_config_update_event = 25;
+  }
+}
+
+message Event {
+  EventHeader header = 1;
+  EventPayload payload = 2;
+}

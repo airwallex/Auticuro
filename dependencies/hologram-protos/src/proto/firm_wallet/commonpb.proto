@@ -1,0 +1,10 @@
+syntax = "proto3";
+package firm_wallet.commonpb;
+
+message ResponseHeader {
+  uint64 seq_num = 1;
+  // log_index and offset will be the first handled command position in raft log
+  uint64 log_index = 2;
+  uint64 offset = 3;
+  //  bool duplicated = 4;
+}

@@ -1,0 +1,112 @@
+syntax = "proto3";
+package firm_wallet.account_management_servicepb;
+import "firm_wallet/accountpb.proto";
+import "firm_wallet/errorpb.proto";
+import "firm_wallet/commonpb.proto";
+
+service AccountManagementService {
+  // Account lifecycle requests
+  rpc CreateAccount(CreateAccountRequest) returns (CreateAccountResponse) {}
+  rpc DeleteAccount(DeleteAccountRequest) returns (DeleteAccountResponse) {}
+  rpc LockAccount(LockAccountRequest) returns (LockAccountResponse) {}
+  rpc UnlockAccount(UnlockAccountRequest) returns (UnlockAccountResponse) {}
+
+  // Account config change requests
+  rpc UpdateAccountConfig(UpdateAccountConfigRequest) returns (UpdateAccountConfigResponse) {}
+
+  // Query Interface
+  rpc GetAccount(GetAccountRequest) returns (GetAccountResponse) {}
+}
+
+message RequestHeader {
+  string dedup_id = 1;
+  string account_id = 2; // file path like id for hierarchy /${account_id}/${currency}/Available
+}
+
+message CreateAccountRequest {
+  RequestHeader header = 1;
+  accountpb.AccountConfig account_config = 2;
+}
+
+message CreateAccountResponse {
+  errorpb.Error error = 1;
+  commonpb.ResponseHeader header = 2;
+  CreateAccountRequest request = 3;
+  accountpb.Account account = 4;
+}
+
+message AccountCreatedEvent {
+  CreateAccountResponse response = 1;
+}
+
+message DeleteAccountRequest {
+  RequestHeader header = 1;
+}
+
+message DeleteAccountResponse {
+  errorpb.Error error = 1;
+  commonpb.ResponseHeader header = 2;
+  DeleteAccountRequest request = 3;
+  accountpb.Account account = 4;
+}
+
+message AccountDeletedEvent {
+  DeleteAccountResponse response = 1;
+}
+
+message LockAccountRequest {
+  RequestHeader header = 1;
+}
+
+message LockAccountResponse {
+  errorpb.Error error = 1;
+  commonpb.ResponseHeader header = 2;
+  LockAccountRequest request = 3;
+  accountpb.Account account = 4;
+}
+
+message AccountLockedEvent {
+  LockAccountResponse response = 1;
+}
+
+message UnlockAccountRequest {
+  RequestHeader header = 1;
+}
+
+message UnlockAccountResponse {
+  errorpb.Error error = 1;
+  commonpb.ResponseHeader header = 2;
+  UnlockAccountRequest request = 3;
+  accountpb.Account account = 4;
+}
+
+message AccountUnlockedEvent {
+  UnlockAccountResponse response = 1;
+}
+
+message UpdateAccountConfigRequest {
+  RequestHeader header = 1;
+  accountpb.BalanceLimit balance_limit = 2;
+}
+
+message UpdateAccountConfigResponse {
+  errorpb.Error error = 1;
+  commonpb.ResponseHeader header = 2;
+  UpdateAccountConfigRequest request = 3;
+  accountpb.Account account = 4;
+}
+
+message AccountConfigUpdatedEvent {
+  UpdateAccountConfigResponse response = 1;
+}
+
+message GetAccountRequest {
+  uint64 seq_num = 1;
+  string account_id = 2;
+}
+
+message GetAccountResponse {
+  errorpb.Error error = 1;
+  uint64 seq_num = 2;
+  accountpb.Account account = 3;
+}

@@ -1,0 +1,15 @@
+syntax = "proto3";
+package tikvpb;
+
+import "raft_serverpb.proto";
+import "kvrpcpb.proto";
+
+// Key/value store API for TiKV.
+service Tikv {
+  // Raft commands (sent between TiKV nodes).
+  rpc Raft(stream raft_serverpb.RaftMessage) returns (raft_serverpb.Done) {}
+
+  rpc QueryRaftLogEntries(kvrpcpb.QueryRaftLogEntriesRequest) returns (kvrpcpb.QueryRaftLogEntriesResponse) {}
+
+  rpc Probe(kvrpcpb.ProbeRequest) returns (kvrpcpb.ProbeResponse) {}
+}
