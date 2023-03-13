@@ -1,12 +1,35 @@
-## Quick Start
-### Setup Environment
+# Quick Start Guide
+## 1. For the impatient
+### 1.1. Setup Environment
 #### For Ubuntu
-- The quick way
 ```
-sh scripts/install_for_ubuntu.sh
+sh scripts/setup_for_ubuntu.sh
 ```
 
-- Manually setup
+#### For MacOS
+```
+sh scripts/setup_for_mac.sh
+```
+
+### 1.2. Build
+```
+cargo build --release
+```
+
+### 1.3. Start the Auticuro cluster
+```
+sh scripts/start_cluster.sh
+```
+
+### 1.4. Send Requests to the Cluster
+Create two accounts, and transfer money from one account to another, then check their balance and balance change history.
+```
+sh scripts/transfer_example.sh
+```
+
+## 2. The detailed Guide
+### 2.1. Setup Environment
+#### For Ubuntu
 ```
 # Install tools
 apt-get update -y && apt-get upgrade -y && apt-get install -y build-essential curl cmake
@@ -33,12 +56,6 @@ rustup component add rustfmt
 ```
 
 #### For MacOS
-- The quick way
-```
-sh scripts/install_for_mac.sh
-```
-
-- Manually setup
 ```
 # Install tools
 brew install curl
@@ -65,44 +82,26 @@ rustup component add rustfmt
 # xcode-select --install
 ```
 
-### Clone the projects
-Create a `working_dir` and clone `Auticuro` and `hologram-protos`.
-```
-# Create working dir
-mkdir working_dir && cd working_dir
-
-# Clone the Auticuro(firm-wallet) project
-git clone https://gitlab.awx.im/financial_platform/open_source/firm-wallet.git
-
-# Clone the proto definitions
-git clone https://gitlab.awx.im/financial_platform/the-hologram/hologram-protos.git
-```
-
-Open two terminals, one for `firm-wallet` and another for `hologram-protos`
-
-### Build and Test
+### 2.2. Build and Test
 Below commands are platform independent, applicable for both Ubuntu and MacOS.
 
 #### Build
 ```
-cd working_dir/firm-wallet
-
-# Optional (Setting credentials for cloning hologram-protos in case of build failure)
-export CARGO_NET_GIT_FETCH_WITH_CLI=true
-
 cargo build --release
 ```
 
 #### Unit Test
 ```
-cd working_dir/firm-wallet
 cargo test --release
 ```
 
-### Start a 5-node cluster locally
+### 2.3. Start a 5-node cluster locally
 - The quick way
+It will start a 5-node `firm-wallet-service` cluster and a `firm-wallet-gateway` which will find leader and redirect
+requests to the leader node of `firm-wallet-service` cluster. 
+
 ```
-cd working_dir/firm-wallet
+cd firm-wallet
 
 sh scripts/start_cluster.sh
 
@@ -113,8 +112,12 @@ sh scripts/start_cluster.sh
 
 To start all 5 raft nodes manually, execute the`run_node.sh` script with a store id:
 ```
+# Start the firm-wallet-gateway
+cd firm-wallet/firm-wallet-gateway
+sh run_gateway.sh
+
 # Change dir to firm-wallet-service
-cd working_dir/firm-wallet/firm-wallet-service
+cd firm-wallet/firm-wallet-service
 
 # Start 5 nodes, open a new termial for each node
 sh run_node.sh 1
@@ -129,56 +132,36 @@ Upon execution, cluster configuration, raft log/state, and application state are
 `db_path`, `raft_db_path`, `wallet_db_path` each. For a fresh new start, clear all three databases by deleting files under
 the specified path.
 
-### Send Request With gRPCurl
-#### Prepare proto definitions
+### 2.4. Send Request With gRPCurl
+Write requests can ONLY be processed by the leader, read requests can be processed by every node. 
+The `firm-wallet-gateway`serves at `port=20171`, the `firm-wallet-service` cluster serves at `port=20161~20165`.
 
+Run `grpcurl` commands in `dependencies/hologram-protos/src/proto`
 ```
-cd working_dir/hologram-protos
-
-# Checkout the proto version currently used. 
-# You could search "hologram_protos" in Cargo.lock to find the SHA of commit.
-git checkout 683996b743a992f0cdf479d6387c55a83ad656ad
-
-# Change to proto directory
-cd src/proto
-```
-Write requests can ONLY be processed by the leader, read requests can be processed by every node.
-
-#### Get Leader
-Open a new terminal and execute below commands
-```
-cd working_dir/firm-wallet 
-sh scripts/get_leader.sh
-
-# Sample output as below means node 4 is the current leader
-# Current Leader: 4
+cd dependencies/hologram-protos/src/proto
 ```
 
-Run `grpcurl` commands in `hologram-protos/src/proto`
-```
-cd working_dir/hologram-protos/src/proto
-```
+#### 2.4.1. Send Write Requests
+The `firm-wallet-gateway` will redirect write requests to the leader of the `wallet-service` cluster.
 
-#### Set LEADER_ID
-```
-# Get the leader id by calling 'sh scripts/get_leader.sh' as above
-export LEADER_ID=4
-```
-#### Create Accounts
+- Create Accounts
 ```
 # Create an account for ben
-grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto account_management_servicepb.proto -d '{"account_config":{"asset_class":{"cash":{"currency":"USD"}}},"header":{"account_id":"ben","dedup_id":"asjdh78y"}}'  127.0.0.1:2016${LEADER_ID} firm_wallet.account_management_servicepb.AccountManagementService/CreateAccount
+grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto account_management_servicepb.proto -d '{"account_config":{"asset_class":{"cash":{"currency":"USD"}}},"header":{"account_id":"ben","dedup_id":"asjdh78y"}}'  127.0.0.1:20171 firm_wallet.account_management_servicepb.AccountManagementService/CreateAccount
 
 # Create an account for tony
-grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto account_management_servicepb.proto -d '{"account_config":{"asset_class":{"cash":{"currency":"USD"}}},"header":{"account_id":"tony","dedup_id":"gklfjg8937"}}'  127.0.0.1:2016${LEADER_ID} firm_wallet.account_management_servicepb.AccountManagementService/CreateAccount
+grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto account_management_servicepb.proto -d '{"account_config":{"asset_class":{"cash":{"currency":"USD"}}},"header":{"account_id":"tony","dedup_id":"gklfjg8937"}}'  127.0.0.1:20171 firm_wallet.account_management_servicepb.AccountManagementService/CreateAccount
 ```
 
-#### Transfer
+- Transfer
 ```
-grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"dedup_id":"1234567890", "transfer_spec": {"from_account_id": "tony", "to_account_id": "ben", "amount": "1234.5"}}'  127.0.0.1:2016${LEADER_ID} firm_wallet.balance_operation_servicepb.BalanceOperationService/Transfer
+grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"dedup_id":"1234567890", "transfer_spec": {"from_account_id": "tony", "to_account_id": "ben", "amount": "1234.5"}}'  127.0.0.1:20171 firm_wallet.balance_operation_servicepb.BalanceOperationService/Transfer
 ```
 
-#### Query Balance
+#### 2.4.2. Send Read Requests
+Each node of the `wallet-service` cluster has consistent state, send read requests to each node to check.
+
+- Query Balance
 ```
 grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"account_id": "tony"}'  127.0.0.1:20161 firm_wallet.balance_operation_servicepb.BalanceOperationService/QueryBalance
 grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"account_id": "tony"}'  127.0.0.1:20162 firm_wallet.balance_operation_servicepb.BalanceOperationService/QueryBalance
@@ -187,7 +170,7 @@ grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_ope
 grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto balance_operation_servicepb.proto -d '{"account_id": "tony"}'  127.0.0.1:20165 firm_wallet.balance_operation_servicepb.BalanceOperationService/QueryBalance
 ```
 
-#### Query Events
+- Query Events
 ```
 grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto internal_servicepb.proto  -d '{"first_seq_num": 1, "last_seq_num": 10}'  127.0.0.1:20161 firm_wallet.internal_servicepb.InternalService/QueryEvents
 grpcurl -plaintext -import-path ./firm_wallet -import-path ./ -proto internal_servicepb.proto  -d '{"first_seq_num": 1, "last_seq_num": 10}'  127.0.0.1:20162 firm_wallet.internal_servicepb.InternalService/QueryEvents
