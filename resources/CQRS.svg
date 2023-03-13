@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" viewBox="713 6015 721 830" width="721" height="830">
+  <defs>
+    <filter id="Shadow" filterUnits="userSpaceOnUse" x="640.9" y="5932">
+      <feGaussianBlur in="SourceAlpha" result="blur" stdDeviation="1.308"/>
+      <feOffset in="blur" result="offset" dx="0" dy="2"/>
+      <feFlood flood-color="black" flood-opacity=".5" result="flood"/>
+      <feComposite in="flood" in2="offset" operator="in" result="color"/>
+      <feMerge>
+        <feMergeNode in="color"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -3 7 6" markerWidth="7" markerHeight="6" color="#ff2600">
+      <g>
+        <path d="M 4.8 0 L 0 -1.8 L 0 1.8 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker_2" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -3 7 6" markerWidth="7" markerHeight="6" color="#0432ff">
+      <g>
+        <path d="M 4.8 0 L 0 -1.8 L 0 1.8 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+  </defs>
+  <g id="firm_wallet" stroke-opacity="1" stroke-dasharray="none" fill-opacity="1" fill="none" stroke="none">
+    <title>firm wallet</title>
+    <rect fill="white" x="713" y="6015" width="721" height="830"/>
+    <g id="firm_wallet_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_165">
+        <rect x="713" y="6015" width="721" height="830" fill="#999"/>
+      </g>
+      <g id="Graphic_164" filter="url(#Shadow)">
+        <circle cx="1081" cy="6353.5" r="149.500238886333" fill="#5e5e5e"/>
+      </g>
+      <g id="Graphic_163" filter="url(#Shadow)">
+        <circle cx="1163" cy="6390.5" r="40.5000647150274" fill="#c0ffc0"/>
+      </g>
+      <g id="Line_162">
+        <line x1="1103.5966" y1="6302.119" x2="1133.2073" y2="6346.174" marker-end="url(#FilledArrow_Marker)" stroke="#ff2600" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_161">
+        <line x1="1058.5942" y1="6302.247" x2="1029.5411" y2="6346.006" marker-end="url(#FilledArrow_Marker)" stroke="#ff2600" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_160">
+        <rect x="1092.9476" y="6320.434" width="56" height="15" fill="#5e5e5e"/>
+        <text transform="translate(1093.9476 6321.434)" fill="white">
+          <tspan font-family="PragmataPro Mono Liga" font-size="12" fill="white" x="0" y="11">Consensus</tspan>
+        </text>
+      </g>
+      <g id="Graphic_159">
+        <rect x="1013.3692" y="6320.691" width="56" height="15" fill="#5e5e5e"/>
+        <text transform="translate(1014.3692 6321.691)" fill="white">
+          <tspan font-family="PragmataPro Mono Liga" font-size="12" fill="white" x="0" y="11">Consensus</tspan>
+        </text>
+      </g>
+      <g id="Graphic_158">
+        <text transform="translate(1025 6452)" fill="white">
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="white" x="0" y="15">Wallet Service</tspan>
+        </text>
+      </g>
+      <g id="Line_157">
+        <line x1="1081" y1="6086" x2="1081" y2="6215.1" marker-end="url(#FilledArrow_Marker)" stroke="#ff2600" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_156">
+        <line x1="1121.5" y1="6268.5" x2="1283.1" y2="6268.5" marker-end="url(#FilledArrow_Marker)" stroke="#ff2600" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_155">
+        <rect x="1221.4247" y="6249.5" width="58" height="38" fill="#999"/>
+        <text transform="translate(1222.4247 6250.5)" fill="white">
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="white" x="12" y="15">Push</tspan>
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="white" x="0" y="33">(in ms)</tspan>
+        </text>
+      </g>
+      <g id="Line_154">
+        <path d="M 852.7534 6370.771 C 865.2116 6368.542 879.1089 6367.052 894 6367.052 C 914.3997 6367.052 933.3516 6369.8486 949.4228 6373.51" marker-end="url(#FilledArrow_Marker_2)" stroke="#0432ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_153">
+        <path d="M 961.8203 6404.04 C 942.9117 6409.238 918.4741 6413.948 892 6413.948 C 882.6737 6413.948 873.7871 6413.3635 865.4338 6412.379" marker-end="url(#FilledArrow_Marker)" stroke="#ff2600" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_152">
+        <rect x="885.235" y="6357.202" width="34" height="20" fill="#999"/>
+        <text transform="translate(886.235 6358.202)" fill="white">
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="white" x="0" y="15">Pull</tspan>
+        </text>
+      </g>
+      <g id="Graphic_151">
+        <rect x="875.7432" y="6403.7794" width="50" height="20" fill="#999"/>
+        <text transform="translate(876.7432 6404.7794)" fill="white">
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="white" x="0" y="15">in min</tspan>
+        </text>
+      </g>
+      <g id="Line_150">
+        <path d="M 838.3344 6416.25 C 870.7023 6435.609 915.6676 6465.483 959.5 6504.5 C 1000.7297 6541.2005 1031.2109 6577.316 1051.3311 6604.16" marker-end="url(#FilledArrow_Marker)" stroke="#ff2600" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_149">
+        <line x1="1081" y1="6682.948" x2="1081" y2="6757.1" marker-end="url(#FilledArrow_Marker_2)" stroke="#0432ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_148">
+        <path d="M 1121.5 6643.769 C 1152.8239 6640.496 1170.6074 6637.261 1218.6135 6613.462 C 1283.6834 6581.204 1317.0753 6526.454 1317.0753 6526.454 C 1317.0753 6526.454 1350.4086 6485.505 1364.3871 6412.5 C 1372.6395 6369.4 1370.8716 6333.057 1366.7845 6306.939" marker-end="url(#FilledArrow_Marker_2)" stroke="#0432ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_147">
+        <rect x="1294.5365" y="6524.562" width="34" height="20" fill="#999"/>
+        <text transform="translate(1295.5365 6525.562)" fill="white">
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="white" x="0" y="15">Read</tspan>
+        </text>
+      </g>
+      <g id="Graphic_146">
+        <rect x="928.9146" y="6522.466" width="138" height="38" fill="#999"/>
+        <text transform="translate(929.9146 6523.466)" fill="white">
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="white" x="48" y="15">Write</tspan>
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="white" x="0" y="33">Operation history</tspan>
+        </text>
+      </g>
+      <g id="Graphic_145">
+        <rect x="1064" y="6710.0724" width="34" height="20" fill="#999"/>
+        <text transform="translate(1065 6711.0724)" fill="white">
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="white" x="0" y="15">Read</tspan>
+        </text>
+      </g>
+      <g id="Line_144">
+        <path d="M 1040.5 6644.323 C 1001.0433 6637.915 939.7701 6620.9156 889.1183 6575.828 C 837.333 6529.731 812.0251 6467.962 800.404 6428.688" marker-end="url(#FilledArrow_Marker_2)" stroke="#0432ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_143">
+        <rect x="832.3645" y="6521.209" width="34" height="20" fill="#999"/>
+        <text transform="translate(833.3645 6522.209)" fill="white">
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="white" x="0" y="15">Read</tspan>
+        </text>
+      </g>
+      <g id="Line_142">
+        <path d="M 1019.5 6075.0694 C 972.7208 6087.3694 908.6973 6112.9135 862.2366 6165.312 C 807.8757 6226.621 794.5008 6305.585 791.66175 6351.867" marker-end="url(#FilledArrow_Marker_2)" stroke="#0432ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Line_141">
+        <path d="M 1142.5 6073.9806 C 1175.6251 6082.342 1217.318 6097.63 1255 6125.5 C 1300.0742 6158.837 1327.2135 6201.156 1342.1339 6231.0826" marker-end="url(#FilledArrow_Marker_2)" stroke="#0432ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_140">
+        <rect x="1260.3612" y="6141.0535" width="82" height="56" fill="#999"/>
+        <text transform="translate(1261.3612 6142.0535)" fill="white">
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="white" x="20" y="15">Query</tspan>
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="white" x="4" y="33">Real-time </tspan>
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="white" x="12" y="51">balance</tspan>
+        </text>
+      </g>
+      <g id="Graphic_139">
+        <rect x="790.9635" y="6139.9136" width="138" height="56" fill="#999"/>
+        <text transform="translate(791.9635 6140.9136)" fill="white">
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="white" x="48" y="15">Query</tspan>
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="white" x="12" y="33">Near real-time</tspan>
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="white" x="0" y="51">Operation history</tspan>
+        </text>
+      </g>
+      <g id="Graphic_138">
+        <rect x="1048" y="6141.088" width="66" height="20" fill="#999"/>
+        <text transform="translate(1049 6142.088)" fill="white">
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="white" x="0" y="15">Commands</tspan>
+        </text>
+      </g>
+      <g id="Graphic_137" filter="url(#Shadow)">
+        <path d="M 1027.5 6042 L 1134.5 6042 C 1138.9183 6042 1142.5 6045.582 1142.5 6050 L 1142.5 6078 C 1142.5 6082.418 1138.9183 6086 1134.5 6086 L 1027.5 6086 C 1023.0817 6086 1019.5 6082.418 1019.5 6078 L 1019.5 6050 C 1019.5 6045.582 1023.0817 6042 1027.5 6042 Z" fill="#c0c0ff"/>
+        <text transform="translate(1020.5 6055)" fill="black">
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="black" x="36.5" y="15">Client</tspan>
+        </text>
+      </g>
+      <g id="Graphic_136" filter="url(#Shadow)">
+        <path d="M 1304 6242.75 L 1411 6242.75 C 1415.4183 6242.75 1419 6246.332 1419 6250.75 L 1419 6286.25 C 1419 6290.668 1415.4183 6294.25 1411 6294.25 L 1304 6294.25 C 1299.5817 6294.25 1296 6290.668 1296 6286.25 L 1296 6250.75 C 1296 6246.332 1299.5817 6242.75 1304 6242.75 Z" fill="#ffc0c0"/>
+        <text transform="translate(1297 6250.5)" fill="black">
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="black" x="8.5" y="15">Query Service</tspan>
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="black" x="44.5" y="33">OLTP</tspan>
+        </text>
+      </g>
+      <g id="Graphic_135" filter="url(#Shadow)">
+        <path d="M 1027.5 6770 L 1134.5 6770 C 1138.9183 6770 1142.5 6773.582 1142.5 6778 L 1142.5 6813.5 C 1142.5 6817.918 1138.9183 6821.5 1134.5 6821.5 L 1027.5 6821.5 C 1023.0817 6821.5 1019.5 6817.918 1019.5 6813.5 L 1019.5 6778 C 1019.5 6773.582 1023.0817 6770 1027.5 6770 Z" fill="#ffc0c0"/>
+        <text transform="translate(1020.5 6777.75)" fill="black">
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="black" x="8.5" y="15">Query Service</tspan>
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="black" x="44.5" y="33">OLAP</tspan>
+        </text>
+      </g>
+      <g id="Graphic_134" filter="url(#Shadow)">
+        <path d="M 738 6364.75 L 845 6364.75 C 849.4183 6364.75 853 6368.332 853 6372.75 L 853 6408.25 C 853 6412.668 849.4183 6416.25 845 6416.25 L 738 6416.25 C 733.5817 6416.25 730 6412.668 730 6408.25 L 730 6372.75 C 730 6368.332 733.5817 6364.75 738 6364.75 Z" fill="#ffc0c0"/>
+        <text transform="translate(731 6372.5)" fill="black">
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="black" x="8.5" y="15">Query Service</tspan>
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="black" x="28.5" y="33">Archiver</tspan>
+        </text>
+      </g>
+      <g id="Graphic_133" filter="url(#Shadow)">
+        <path d="M 1040.5 6675.998 L 1040.5 6620.398 C 1040.5 6616.5616 1058.644 6613.448 1081 6613.448 C 1103.356 6613.448 1121.5 6616.5616 1121.5 6620.398 L 1121.5 6675.998 C 1121.5 6679.834 1103.356 6682.948 1081 6682.948 C 1058.644 6682.948 1040.5 6679.834 1040.5 6675.998" fill="#c0ffff"/>
+        <path d="M 1040.5 6675.998 L 1040.5 6620.398 C 1040.5 6616.5616 1058.644 6613.448 1081 6613.448 C 1103.356 6613.448 1121.5 6616.5616 1121.5 6620.398 L 1121.5 6675.998 C 1121.5 6679.834 1103.356 6682.948 1081 6682.948 C 1058.644 6682.948 1040.5 6679.834 1040.5 6675.998 M 1040.5 6620.398 C 1040.5 6624.2344 1058.644 6627.348 1081 6627.348 C 1103.356 6627.348 1121.5 6624.2344 1121.5 6620.398" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5"/>
+        <text transform="translate(1041.5 6633.673)" fill="black">
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="black" x="11.5" y="15">History</tspan>
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="black" x="31.5" y="33">DB</tspan>
+        </text>
+      </g>
+      <g id="Graphic_132" filter="url(#Shadow)">
+        <circle cx="1081" cy="6268.5" r="40.5000647150269" fill="#ffc0ff"/>
+        <text transform="translate(1049.6 6259.5)" fill="black">
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="black" x="7.4" y="15">Leader</tspan>
+        </text>
+      </g>
+      <g id="Graphic_131">
+        <text transform="translate(1131 6381.5)" fill="black">
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="black" x="0" y="15">Follower</tspan>
+        </text>
+      </g>
+      <g id="Graphic_130" filter="url(#Shadow)">
+        <circle cx="1e3" cy="6390.5" r="40.5000647150274" fill="#c0ffc0"/>
+      </g>
+      <g id="Graphic_129">
+        <text transform="translate(968 6381.5)" fill="black">
+          <tspan font-family="PragmataPro Mono Liga" font-size="16" fill="black" x="0" y="15">Follower</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

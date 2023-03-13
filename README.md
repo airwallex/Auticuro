@@ -1,121 +1,197 @@
-Auticuro: A High Performance, Strong Consistent Distributed Wallet Service
-=========
-[<img alt="docs.rs" src="https://img.shields.io/badge/docs-firm-wallet-service-66c2a5?style=for-the-badge&labelColor=555555&logo=docs.rs" height="20">](https://financial_platform.pages.awx.im/the-hologram/firm-wallet/firm-wallet-service/)
-[<img alt="docs.rs" src="https://img.shields.io/badge/docs-firm-wallet-gateway-66c2a5?style=for-the-badge&labelColor=555555&logo=docs.rs" height="20">](https://financial_platform.pages.awx.im/the-hologram/firm-wallet/firm-wallet-gateway/)
+# Auticuro: A High Performance, Strong Consistent, Distributed Wallet Service
 
-## Introduction
-Auticuro is a high-performance wallet service, leveraging [Raft consensus algorithm](https://raft.github.io/raft.pdf) 
-to achieve both high availability and strong consistency, which could tolerate 2 nodes down in a 5-nodes deployment. 
-With data flowing only from Raft leader to followers, it's naturally an event sourcing system with single source of
-truth well fit for mission-critical financial scenarios.
+## 1. Introduction
+**Auticuro** is a high performance, strong consistent, distributed wallet service fitting for mission-critical financial 
+applications. It provides account management and balance operation functionalities, which could be used to build composite
+money movement functionalities required by customers.
 
-Rust language is selected for its performance comparable to C++, as well as the language property of memory and thread
-safety. For raft consensus implementation, we used [raft-rs](https://github.com/tikv/raft-rs) crate developed by
-PingCAP.
+Besides providing **exactly-once** money movement guarantees, **Auticuro** also supports TCC/SAGA balance operation APIs to
+ensure atomicity for multiple balance operations.
 
-Transferring money between 2 accounts is a typical use case. With well-modularized underlying consensus support, 
-it's easy to be extended to support more complicated business scenarios.
+**Auticuro** has predictable low latency(**P99 < 20ms** when TPS = **10K**, tested against a 5-node deployment on GCP) 
+and high-availability(RTO <= **4s** for fault recovery), which make it a suitable corner stone for critical financial 
+applications.
 
-About the naming -- **Auticuro**: AU (gold in Latin is aurum, which is the chemistry symbol for gold AU) + “curo (Italian for protect)
-
-## Features
-### Functional Features
+## 2. Features
+### 2.1. Functional Features
   - Balance operations 
     - ✅ Bilateral money transfer
-    - ✅ Batch balance operation (Increase/Decrease balance on more than accounts atomically)
+    - ✅ Batch balance operation (Increase/Decrease balance on multiple accounts atomically)
   - Account management operations
     - ✅ Create/Delete/Lock/Unlock an account
     - ✅ Change the upper/lower balance limit of an account
 - ✅ Support multi asset class (cash, crypto, coupon…)
 - Support account hierarchy(TBD)
 
-Currently, the bilateral money transfer is ready, other features are on the road map.
+### 2.2. Non-functional Features
+- **High throughput**: Separated reads and writes, no lock on the critical write path
+- **High availability**: Built upon a Raft-based consensus message queue to achieve HA
+- **Low latency**: The wallet service pushes down computation to the storage layer to achieve low latency 
+- **Horizontal scalability**: The horizontal scalability can be achieved with the help of an in-house transaction manager(Marker)
 
-### Non-functional Features
-- **High throughput**
+## 3. Design and Architecture
+### 3.1. CQRS with Event Sourcing 
+CQRS stands for Command and Query Responsibility Segregation, a pattern that separates reads and writes into different 
+models, using **commands** to update data, and **queries** to read data.
 
-    Separated reads and writes, no lock on the critical write path
-- **High availability**
+Benefits of CQRS include:
+- **Independent scaling**. CQRS allows the read and write workloads to scale independently, and results in fewer lock contentions.
+- **Optimized data schemas**. The query side can use a schema that is optimized for queries, while the command side uses 
+    a schema that is optimized for updates.
+- **Separation of concerns**. Segregating the command and query sides can result in models that are more maintainable and flexible.  
 
-    Built upon the Raft-based consensus message queue to achieve HA
-- **Low latency**
+Event Sourcing:
 
-    The wallet service pushes down computation to the storage layer to achieve low latency 
-- **Horizontal scalability**
+Instead of storing just the current state of the data in a domain, an append-only store is used to record the full series of 
+actions taken on that data. The store acts as the system of record and can be used to materialize the domain objects.
 
-   The horizontal scalability can be achieved with the help of an in-house workflow engine(Marker)
+<p style="text-align: center;">
+<img src="resources/CQRS.svg" alt="Event Sourcing" />
+</p>
 
+Above is the high-level architecture of **Auticuro**, which uses CQRS with Event Sourcing. At the core is the command 
+side(wallet service cluster), and the surrounding services are query side services. The **Auticuro** project currently 
+contains the command side, query side services will be open sourced-in the future.
 
-## Quick start
-See details [here](docs/quickstart.md)
+#### 3.1.1. Command Side
+- **Wallet Service Cluster**
+  
+  The wallet service cluster consists of one leader and several followers. The leader handles write requests from 
+  clients and replicates data to follower nodes using the Raft consensus algorithm. Implementation-wise, Rust language 
+  is selected for its performance comparable to C++, as well as the language property of memory and thread safety.
+  Command side would generate events and replicates the events into the event store.
+  
+#### 3.1.2. Query Side
+The query side provides materialized views of the accounts. These views are tailored to the requirements of the 
+application, which helps to maximize the query performance. Because the event store is the golden source of accounts, 
+it is possible to delete the materialized views and replay all past account/balance change events to create a new 
+representation of the current state when the query side system evolves, or when the query side data model must change. 
+The materialized views are in effect a durable read-only cache of the events.
 
-## Documentation
-### Architecture
-![Alt text](./resources/Architecture.drawio.svg)
+Generally, query services can be characterized into below categories:
 
-The above figure shows the design architecture and how a transfer gRPC request is handled. Each raft node holds its raft
-log, `Wallet StateMachine`, with attached `RocksDB` and `In-Mem State`. The raft log replication process is not shown here.
+- **Query Service(Archiver)**
 
-__Steps:__
+  It replicates commands and events from the command side and persists all the historical commands and events.  
 
-1. Raft leader accepts the request, appends it to its raft log, and receives the Raft log index and offset. (Raft
-   consensus module handles the log replication and advances the `applied_index`, indicating a log entry is ready for
-   applying).
+- **Query Service(OLTP)**
 
-2. The leader gRPC thread registers the TransferRequest in the msg_broker with `Raft(index, offset)` and waits for the
-response from the msg_broker asynchronously. 
+  Derived views are built from the event stream, a typical scenario is to calculate the near real-time account balance at
+  the non-leaf level. It is very flexible since whenever a new derived view is needed, a new query service can just be
+  added without changes to the existing services.
 
-    On every node, a single thread loop of `Log Consumer`  polls committed raft logs until raft log's `applied_index`
-    and sends them to `Wallet StateMachine` via a Single Processor Single Consumer (SPSC) channel.
+- **Query Service(OLAP)**
 
-3. `Wallet StateMachine` applies the received log to the state and persists the state to RocksDB, 
-and send the response for `Raft(index, offset)` to msg_broker
+  Event streams can be synchronized from PG to data warehouse through CDC, such that complex analytical queries can be supported.
 
-4. The leader gRPC thread receives the response from the msg_broker(by joining the request and response at 
-Raft(index, offset)) and sends it back to the client.
+### 3.2. Command Side
+<p style="text-align: center;">
+<img src="resources/firm-wallet-c-side.svg" alt="firm-wallet-c-side" />
+</p>
 
-### Event Sourcing with CQRS
+The above figure shows how gRPC requests are handled by the **leader** node of the wallet service cluster. Each node
+in the cluster holds its raft log, `WalletStateMachine`, with attached `RocksDB` and `WalletStateMachine`. 
+The raft log replication process is not shown here.
 
-<img src="resources/Event Sourcing.svg" width = "600" height = "650" alt="Event Sourcing" align=center />
+#### 3.2.1. Request Handling:
+- **Thread 1**: The Foreground gRPC Thread
 
-The design follows the CQRS system to segregate writing and reading.
+  - **Step 1**. The gRPC thread accepts a `TransferRequest`, appends it to the raft log, and waits for that request to be 
+    committed, and receives the corresponding raft `log_index` (This implies that the log entry has been persisted on
+    majority nodes, and ready to be applied).
+  
+  - **Step 2**. The gRPC thread registers the `TransferRequest` into the `MessageBroker` with that `log_index`, and waits 
+    for the `TransferResponse` from the `MessageBroker` and replies that response to the client.
 
-__Wallet Service Cluster__
+- **Thread 2**: Single-Threaded Log Consumer
+    
+  - **Step 1**. The `LogConsumer` polls that committed log entry from the raft log and deserializes the log entry to the
+    `TransferRequest`.
+  - **Step 2**. The `LogConsumer` sends the `TransferRequest` to the `WalletStateMachine` via the Single Producer Single 
+    Consumer (SPSC) channel.
 
-The Leader node serves client transfer requests and replies with the execution result.
+- **Thread 3**: Single-Threaded Lockless Critical Path
 
-__Query Service(Archiver)__
+  - **Step 1**. The `WalletStateMachine` receives the `TransferRequest` from the SPSC channel, de-duplicates via `DedupId Store`,
+    updates the `BalanceMap`, generates the `TransferResponse` and `BalanceChangeEvent`, and persists both`BalanceChangeEvent`
+    and `dedupId` into RocksDB. 
+  - **Step 2**. The `WalletStateMachine` registers the `TransferResponse` into the `MessageBroker` with that `log_index`.
+  
+- **Thread 4**: Single-Threaded Message Broker
 
-It will persist all the historical commands and events
+  - **Match**. The `MessageBroker` is an infinite loop matching the `TransferRequest` from the gRPC thread and the 
+    `TransferResponse` from the `WalletStateMachine` via the `log_index`.
 
-__Query Service(OLTP)__
+### 3.3. Query Side
+<p style="text-align: center;">
+<img src="resources/firm-wallet-q-side.svg" alt="firm-wallet-q-side"/>
+</p>
+Query side services apply the balance/account change events generated by the command side service, and generate
+materialized views to serve different query requirements. Typical query side services include:
 
-Derived views are built from the event stream, a typical scenario is to calculate the near real-time account balance at 
-the non-leaf level. This way is very flexible since whenever a new derived view is needed, a new service can just be
-added without changes to the existing services, which aligns with the Open-Close principle.
+#### 3.3.1. Account Hierarchy Service
+It is very common that accounts might have a tree-like hierarchies, balance operations only applies to leaf accounts, and
+balance of non-leaf accounts need to be calculated. An account hierarchy service can be built to satisfy this 
+requirement:
+- The `Account Hierarchy Service` applies events and builds leaf accounts' balance
+- The `Account Hierarchy Service` reads account hierarchy config from database and calculate the non-leaf account's balance 
+  by aggregating the balance of its child accounts.
+- Users could CRUD account hierarchy configs via the UI.
 
-__Query Service(OLAP)__
+#### 3.3.2. Account Query Service
+The `Account Query Service` provides the Read-Your-Write consistency query for account balances and balance change history:
+- The balance change events contains the account version number, facilitating account-wise balance history pagination query.
+- The `Account Query Service` record and apply events to build the account balance of different versions.
+- The versioned account balance can be replicated to data warehouse for OLAP analysis.
 
-Event streams can be synchronized from PG to BigQuery through CDC, such that analytical requirements can be easily supported.
+#### 3.3.3. Kafka Publisher
+The events can be published to `Kafka` for downstream system integration.
 
-## Configurations
-See details [here](docs/configuration.md)
+### 3.4. Fault Tolerance
+<div style="text-align: center;">
+<img src="resources/firm-wallet-deployment.svg" alt="firm-wallet-deployment" />
+</div>
 
-## Performance
+Above is the whole ecosystem of **Auticuro**. The whole system is fault-tolerant because
+  - **Command Side**(Wallet service cluster)
+    
+    A typical deployment of the wallet service cluster consists of 5 replicas(1 leader + 4 followers). The cluster is 
+    available as long as the majority(n >= 3 in this case) are alive. If a follower has a transient network failure or pod failure, 
+    the cluster would not be affected, meanwhile, the failed follower would catch up with the cluster when it recovers. 
+    If the leader fails, a new leader will be elected among the remaining 4 followers, the RTO(Recover Time Objective) 
+    is less than 4 seconds.
+    
+    The wallet service will periodically snapshot its state and upload snapshots to cloud object storage, which
+    facilitates the recovery when a replica undergoes disk failure.
+    
+  - **Event Store**
+    
+    RDBMS is used to store all the events, and historical events will be backed up to the cloud object storage. If the RDBMS 
+    undergoes a temporary failure, query services could fallback to query events directly from the command side, if the 
+    RDBMS undergoes a permanent failure, the event store could recover event logs from cloud object storage.
 
-#### Configuration
+  - **Query side** 
 
-8 vCPUs * 5 node cluster on GCP, attached with SSD persistent disks (pd-ssd)
+    Query services are stateless Deployment in k8s, such that they could tolerate pod failure since they can always 
+    rebuild their states by replaying the events. 
+    
+## 4. Quick Start
+Follow the quick start [guide](docs/quickstart.md) to set up environment and run Auticuro locally
 
-#### Test Strategy
+## 5. Configurations
+Follow the [guide](docs/configuration.md) to customize configurations for Auticuro
 
-A rust-based performance testing tool was built for the wallet service, the tool will start multiple coroutines and
-send requests sequentially to the server.
+## 6. Performance
 
-#### Test Result
+### 6.1. Test Config
+
+8 vCPUs * 5 node cluster on GCP, attached with SSD persistent disks (pd-ssd). A rust-based performance testing tool was 
+built for the wallet service, the tool will start multiple coroutines and send requests sequentially to the server.
+
+### 6.2. Test Result
 |RPC type|Concurrency |Metadata Payload|TPS|Avg. Latency (ms)|p99 Latency (ms)|
-|:---:|:---:|:---:|:---:|:---:|:---:|
-|     Transfer     |100|128B|13.5k|13|81|
+|:---:|:---:|:---:|:--:|:---:|:---:|
+|     Transfer     |100|128B|10k|6|19|
 
 - Latency Distribution vs Throughput
 
@@ -123,8 +199,8 @@ send requests sequentially to the server.
 
   <img alt="latency distribution" src="resources/latency_distribution.gif" height="400">
 
-## Monitoring
-#### Http Metrics Server
+## 7. Monitoring
+### 7.1. Http Metrics Server
 
 An HTTP metrics server is built on each node to
 check [prometheus](https://prometheus.io/docs/prometheus/latest/getting_started/)
