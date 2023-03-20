@@ -53,6 +53,10 @@ rustup default nightly-2022-01-13
 
 # Install rustfmt component
 rustup component add rustfmt
+
+# For UT Coverage, need install grcov and llvm-tools
+cargo install grcov
+rustup component add llvm-tools-preview
 ```
 
 #### For MacOS
@@ -80,6 +84,10 @@ rustup component add rustfmt
 
 # Install xcode(Ignore if installed)
 # xcode-select --install
+
+# For UT Coverage, need install grcov and llvm-tools
+cargo install grcov
+rustup component add llvm-tools-preview
 ```
 
 ### 2.2. Build and Test
@@ -94,6 +102,25 @@ cargo build --release
 ```
 cargo test --release
 ```
+
+#### Run Test Coverage
+- Generate the test coverage report
+  The report will be auto-open in the browser
+```
+cd firm-wallet
+sh scripts/run_test_coverage.sh
+```
+
+- View the report directory(Optional)
+
+  Find the report in the dir `target/release/coverage`
+```
+ls target/release/coverage 
+
+# The output
+# badges          coverage.json   index.html      src
+```
+
 
 ### 2.3. Start a 5-node cluster locally
 - The quick way

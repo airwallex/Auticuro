@@ -22,5 +22,9 @@ rustup default nightly-2022-01-13
 # Install rustfmt component
 rustup component add rustfmt
 
+# For UT Coverage, need install grcov and llvm-tools
+cargo install grcov
+rustup component add llvm-tools-preview
+
 # Install xcode(Ignore if installed)
 #xcode-select --install
