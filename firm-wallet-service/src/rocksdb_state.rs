@@ -36,11 +36,13 @@ pub struct HardStateKind<'a> {
     pub(crate) key: &'a str,
 }
 
+/// The last raft log index that the WalletStateMachine has applied
 pub const APPLIED_INDEX: HardStateKind<'static> = HardStateKind {
     default_value: 5, // raft log index starts from 5, a magic number from raft-rs.
     key: "applied_index",
 };
 
+/// The last sequence number of the event stream in rocksDB
 pub const PERSISTED_LAST_SEQ_NUM: HardStateKind<'static> = HardStateKind {
     // the persisted last seq num will be 0 on start with no events, and the real last event's
     // seq_num starts from 1
@@ -48,6 +50,7 @@ pub const PERSISTED_LAST_SEQ_NUM: HardStateKind<'static> = HardStateKind {
     key: "last_seq_num",
 };
 
+/// The first sequence number of the event stream in rocksDB
 pub const PERSISTED_FIRST_SEQ_NUM: HardStateKind<'static> = HardStateKind {
     // the persisted first seq num will be 0 on start with no events, and the real first event's
     // seq_num starts from 1
@@ -55,6 +58,7 @@ pub const PERSISTED_FIRST_SEQ_NUM: HardStateKind<'static> = HardStateKind {
     key: "first_seq_num",
 };
 
+/// The consecutive increasing sequence number of the event
 #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
 pub struct SequenceNumber(pub u64);
 
@@ -72,6 +76,7 @@ impl SequenceNumber {
     }
 }
 
+/// RocksDB Wrapper
 #[derive(Clone)]
 pub struct RocksDBState {
     db: RocksEngine,
@@ -90,6 +95,8 @@ impl RocksDBState {
         self.db.clone()
     }
 
+    /// util method to read `APPLIED_INDEX`, `PERSISTED_LAST_SEQ_NUM`, `PERSISTED_FIRST_SEQ_NUM`
+    /// from rocksDB
     pub fn read_hard_state_from_db(&self, hard_state_kind: HardStateKind) -> u64 {
         let val = match self.db.get_value(hard_state_kind.key.as_bytes()) {
             Some(bytes) => BigEndian::read_u64(&bytes),
@@ -105,6 +112,7 @@ impl RocksDBState {
         val
     }
 
+    /// Get `event` by `seq_num`, there is a Map<seq_num -> event> in rocksDB,
     pub fn read_event_from_db(&self, seq_num: SequenceNumber) -> Option<Event> {
         let begin_instant = Instant::now_coarse();
 
@@ -118,6 +126,7 @@ impl RocksDBState {
         event_opt
     }
 
+    /// Get `seq_num` by `command_id` , there is a Map<command_id -> seq_num> in rocksDB,
     pub fn read_seq_num_from_db(&self, command_id: &str) -> Option<SequenceNumber> {
         let begin_instant = Instant::now_coarse();
         let dedup_key = keys::dedup_key(command_id.as_bytes());
@@ -133,6 +142,7 @@ impl RocksDBState {
         seq_num_opt
     }
 
+    /// Read the whole account map: <account_id -> Account> from RocksDB into memory
     pub fn read_accounts_from_db(&self) -> HashMap<String, Account> {
         let begin_instant = Instant::now_coarse();
         let mut accounts = HashMap::new();

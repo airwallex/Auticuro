@@ -42,10 +42,15 @@ lazy_static! {
     };
 }
 
+/// The `struct Account` is an in-mem wrapper for the Account protobuf to simplify the account
+/// manipulations. An account contains three parts: `Balance`, `AccountConfig` and `AccountState`
+/// The `Account` struct provides basic query and updates APIs for these three parts.
 #[derive(Clone)]
 pub struct Account(pub AccountPb);
 
 impl Account {
+    /// Create an Account by account_id, with balance = 0.0, state = Normal,
+    /// asset_class = Cash {currency = USD}
     pub fn new(account_id: &str) -> Self {
         info!(
             "Account created for {} with initial balance 0.0",
@@ -60,6 +65,10 @@ impl Account {
     }
 }
 
+/// All the account update methods follow the Copy-On-Write pattern, and the modifications are
+/// applied on a cloned account. For balance operation methods, the account should be in the
+/// Normal state, and the updated available balance must not violate the balance limitations. For
+/// account state operation methods, the state transition will be validated.
 impl Account {
     pub fn from_proto(account_pb: AccountPb) -> Self {
         Account(account_pb)
@@ -73,6 +82,7 @@ impl Account {
         &self.0.account_id
     }
 
+    /// If successfully executed, `available += amount`.
     pub fn increase_balance_by(
         &self,
         amount: &str,
@@ -104,6 +114,7 @@ impl Account {
         self.0.get_balance()
     }
 
+    /// Set the BalanceLimit of the current account, basically the `upper limit` and `lower limit`.
     pub fn set_balance_limit(&self, balance_limit: &BalanceLimit) -> Self {
         let mut updated_account = self.clone();
         updated_account
@@ -113,6 +124,10 @@ impl Account {
         updated_account
     }
 
+    /// Reserve money with a `reservation_id`. The`amount` should >= 0 and the `reservation_id`
+    /// should not exist in the `Balance.reservations`.
+    /// 1. `available -= amount`
+    /// 2. Insert an entry `<reservation_id, amount>` into `Balance.reservations`
     pub fn reserve(
         &self,
         reservation_id: &str,
@@ -143,6 +158,10 @@ impl Account {
         Ok(updated_account)
     }
 
+    /// Release all money by `reservation_id`. The entry `reservation_id` should exist in
+    /// `Balance.reservations`.
+    /// 1. Remove the entry `<reservation_id, reservation_amount>` from `Balance.reservations`
+    /// 2. `available += reservation_amount`
     pub fn release_all(
         &self,
         reservation_id: &str,
@@ -161,6 +180,11 @@ impl Account {
         Ok(updated_account)
     }
 
+    /// Partially release money by `reservation_id`. The entry `reservation_id` should exist in
+    /// `Balance.reservations` and the `amount` should <= `reservation_amount`.
+    /// 1. If `reservation_amount == amount`, remove entry `<reservation_id, reservation_amount>`,
+    ///    else, update the entry to `<reservation_id, reservation_amount - amount>`
+    /// 2. `available += amount`
     pub fn partial_release(
         &self,
         reservation_id: &str,
@@ -192,6 +216,7 @@ impl Account {
         }
     }
 
+    /// Lock the account. If locked, the account is not allowed to do any operations until unlocked.
     pub fn lock(&self) -> GeneralResult<Self> {
         self.validate_state_transition(AccountState::Locked)?;
         let mut updated_account = self.clone();
@@ -199,6 +224,7 @@ impl Account {
         Ok(updated_account)
     }
 
+    /// Unlock the locked account
     pub fn unlock(&self) -> GeneralResult<Self> {
         self.validate_state_transition(AccountState::Normal)?;
         let mut updated_account = self.clone();
@@ -206,6 +232,9 @@ impl Account {
         Ok(updated_account)
     }
 
+    /// Delete the account. Prerequisites:
+    /// 1. `available == 0`
+    /// 2. No existence of reservations
     pub fn delete(&self, calculator: &BalanceCalculator) -> GeneralResult<Self> {
         self.validate_state_transition(AccountState::Deleted)?;
 
@@ -217,6 +246,7 @@ impl Account {
 }
 
 impl Account {
+    /// Validate that the two accounts have the same `asset_class`.
     pub fn validate_asset_class_compatibility(&self, other: &Account) -> GeneralResult<()> {
         let this_asset_class = self.0.get_config().get_asset_class();
         let other_asset_class = other.0.get_config().get_asset_class();

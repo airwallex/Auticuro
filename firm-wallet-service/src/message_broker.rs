@@ -24,29 +24,49 @@ use std::sync::mpsc;
 use tikv_util::time::{duration_to_ms, Instant};
 use tikv_util::{debug, error, info, trace};
 
+/// The position of a command in the raft log. The raft log is an infinite stream of `RaftLogEntry`,
+/// each `RaftLogEntry` has a consecutive increasing `log_index` and consists of a batch of
+/// commands. Each `command` has a consecutive increasing `offset`. The tuple `<log_index,
+/// offset>` can uniquely identify a command in the raft log.
 #[derive(Debug, PartialEq, Eq, Hash, Clone, Copy, Ord, PartialOrd)]
 pub struct Position {
     pub log_index: u64,
     pub offset: u64,
 }
 
+/// An in-flight event waits for being matched with its corresponding command at `Position`. When
+/// the `WalletStateMachine` finishes applying the command at `Position`, it registers the
+/// generated `event` with command `Position` as an `InflightEvent`.
 #[derive(Debug)]
 pub struct InflightEvent {
     pub position: Position,
     pub event: GeneralResult<Event>,
 }
 
+/// An in-flight request waits for being matched with its corresponding Event.
 #[derive(Debug)]
 pub struct InflightRequest {
     pub position: Position,
+
+    /// The reply channel for its the corresponding `InflightEvent`
     pub resp_to: oneshot::Sender<InflightEvent>,
+
+    /// The timestamp when the grpc thread sends the request to the `MessageBroker`
     pub send_time: Instant,
 }
 
+/// The `MessageBroker` is where to hold and match the in-flight requests(commands) and events.
 pub struct MessageBroker {
+    /// The in-flight requests waiting for matching events
     inflight_requests: BTreeMap<Position, (Instant, oneshot::Sender<InflightEvent>)>,
+
+    /// The in-flight events waiting for matching requests
     inflight_events: BTreeMap<Position, InflightEvent>,
+
+    /// Channel to receive registered requests
     inflight_request_rx: mpsc::Receiver<InflightRequest>,
+
+    /// Channel to receive registered events
     inflight_event_rx: mpsc::Receiver<InflightEvent>,
 }
 
@@ -63,12 +83,17 @@ impl MessageBroker {
         }
     }
 
+    /// The main loop of the message broker
     pub fn run(&mut self) {
         info!("Starting the message broker...");
         loop {
             let start_time = Instant::now_coarse();
             let inflight_requests = utils::batch_recv(&self.inflight_request_rx, 1000);
 
+            // Step 1. Receive a batch of `inflight_requests` from the `self.inflight_request_rx`
+            // and try to find their corresponding `inflight_events`. If found, pop out the event
+            // and reply to the sender(the grpc thread). If not, put the inflight_request to
+            // the `self.inflight_requests` map
             for inflight_request in inflight_requests {
                 match self.inflight_events.remove(&inflight_request.position) {
                     Some(inflight_event) => {
@@ -94,6 +119,8 @@ impl MessageBroker {
                 }
             }
 
+            // Step 2. Receive a batch of events from the `self.inflight_event_rx`. If found
+            // matching requests, reply to the sender. Else, cache it in the `self.inflight_events`
             let inflight_events = utils::batch_recv(&self.inflight_event_rx, 1000);
 
             for inflight_event in inflight_events {
@@ -120,7 +147,10 @@ impl MessageBroker {
                 }
             }
 
+            // Step 3. gc in-flight events
             self.gc_inflight_events();
+
+            // Step 4. gc in-flight requests and reply to the sender with a timeout error
             self.gc_inflight_requests();
 
             // yield CPU, avoid busy wait

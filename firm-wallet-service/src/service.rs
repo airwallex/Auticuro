@@ -45,19 +45,28 @@ use tikv_util::time::{duration_to_sec, Instant};
 use tikv_util::{debug, error, info, trace};
 
 /**
- * Grpc Service
+ * Wallet Grpc Service
  */
-/// Service handles the RPC messages for the `Tikv` service.
+/// `WalletService` implements three kinds of gRPC interfaces:
+/// 1. `AccountManagementService`
+/// 2. `BalanceOperationService`
+/// 3. `InternalService`
+/// The gRPC thread follows the same procedure to handle write requests. Check README.md for details
 #[derive(Clone)]
 pub struct WalletService {
+    /// the embedded raft-based message queue
     message_queue: Arc<MessageQueueAdapter>,
+
+    /// the wallet state machine, needed for handling query
     state_machine: Arc<RwLock<StateMachine>>,
+
     config: WalletServiceConfig,
+
+    /// the channel for the gRPC thread to register requests to the message broker
     inflight_request_tx: mpsc::Sender<InflightRequest>,
 }
 
 impl WalletService {
-    /// Constructs a new `Service` which provides the `Tikv` service.
     pub fn new(
         message_queue: Arc<MessageQueueAdapter>,
         state_machine: Arc<RwLock<StateMachine>>,
@@ -72,6 +81,14 @@ impl WalletService {
         }
     }
 
+    /// Wait for the response of the command/request at <log_index, offset> in the raft log
+    ///
+    /// # Arguments
+    ///
+    /// * `log_index` - The log index of the command/request in the raft log
+    /// * `offset` - The offset of the command/request in the raft log entry at `log_index`
+    /// * `inflight_request_tx` - the channel to register the in-flight request
+    /// * `command_id` - the unique id of a command
     async fn wait_for_response(
         log_index: u64,
         offset: u64,

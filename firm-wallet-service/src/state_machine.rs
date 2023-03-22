@@ -44,21 +44,20 @@ use tikv_util::time::{duration_to_ms, duration_to_sec, Instant};
 use tikv_util::{debug, trace, warn};
 
 /**
- * State Machine
+ * The Wallet State Machine
  */
 pub struct StateMachine {
-    // account_id -> balance
+    // account_id -> Account
     // The whole accounts map, recovered from DB during startup.
     pub(crate) accounts: HashMap<String, Account>,
 
-    // log_index of the latest applied entry.
+    // raft log_index of the latest applied entry.
     applied_index: u64,
 
     // last event entry's seq_num, used by downstream to verify data integrity of event stream.
     // last_seq_num == PERSISTED_LAST_SEQ_NUM + num_of_in_mem_events
     pub(crate) last_seq_num: u64,
 
-    // Todo Need dedup_id -> seq_nums since Cmd: Event is 1:N
     // dedup_id -> seq_num
     seq_num_cache: HashMap<String, SequenceNumber>,
 
@@ -72,6 +71,7 @@ pub struct StateMachine {
 }
 
 impl StateMachine {
+    /// Recover the in-mem wallet state machine from rocksdb
     pub fn recover_from_db(
         rocksdb_state: RocksDBState,
         inflight_event_tx: mpsc::Sender<InflightEvent>,
@@ -97,6 +97,7 @@ impl StateMachine {
         (state_machine, context)
     }
 
+    /// search cache, if not found, search disk
     pub fn get_event(&self, seq_num: SequenceNumber) -> Option<EventPb> {
         if let Some(event) = self.event_cache.get(&seq_num) {
             return Some(event.clone());
@@ -105,7 +106,7 @@ impl StateMachine {
         self.rocksdb_state.read_event_from_db(seq_num)
     }
 
-    // search cache, if not found, search disk.
+    /// search cache, if not found, search disk
     pub fn get_seq_num(&self, command_id: &str) -> Option<SequenceNumber> {
         if let Some(&seq_num) = self.seq_num_cache.get(command_id) {
             return Some(seq_num);
@@ -114,6 +115,7 @@ impl StateMachine {
         self.rocksdb_state.read_seq_num_from_db(command_id)
     }
 
+    /// handle commands in a certain raft log entry
     pub fn apply_entry(&mut self, context: &mut ApplyContext, entry: (u64, Vec<CommandPb>)) {
         let (log_index, commands) = entry;
         assert_eq!(self.applied_index + 1, log_index);
@@ -134,7 +136,7 @@ impl StateMachine {
         // update applied_index after already applied the entry.
         self.applied_index = log_index;
 
-        // update context
+        // put updated applied_index and last_seq_num in the wb
         let mut buf = [0; 8];
         BigEndian::write_u64(&mut buf, self.applied_index);
         context.wb.put(APPLIED_INDEX.key.as_bytes(), &buf);
@@ -170,6 +172,7 @@ impl StateMachine {
         }
     }
 
+    // flush the updates in wb to rocksDB atomically
     fn flush(&mut self, context: &mut ApplyContext) {
         assert!(self.applied_index > context.flushed_applied_index);
         let begin_instant = Instant::now_coarse();
@@ -198,6 +201,11 @@ impl StateMachine {
         context.flushed_timestamp = Instant::now_coarse();
     }
 
+    /// The entry point for handling a command. Different kinds of commands share the same procedure
+    /// 1. Check duplication. If a duplicate request is found, the previous response will be replied
+    /// 2. Handle the concrete request, which basically does validations, updates the in-mem wallet
+    /// state machine and puts updates in the wb to be flushed later
+    /// 3. Generate events and registers the event to message broker
     fn handle_command(
         &mut self,
         context: &mut ApplyContext,
@@ -633,11 +641,22 @@ impl StateMachine {
  */
 /// ApplyContext is not Sync, since DBWriteBatch is not Sync.
 pub struct ApplyContext {
+    /// Maximum applied raft log entries in the wb. If exceeded, they will be flushed to RocksDB
     batch_size: u64,
+
+    /// In-mem write buffer for rocksDB, which guarantees atomicity
     wb: RocksWriteBatch,
+
+    /// tombstone for deleted accounts
     to_be_deleted_account_ids: Vec<String>,
+
+    /// the last flushed applied index
     flushed_applied_index: u64,
+
+    /// the latest flush timestamp of the `wb`
     flushed_timestamp: Instant,
+
+    /// the channel to register in-flight events
     inflight_event_tx: mpsc::Sender<InflightEvent>,
 }
 
@@ -666,10 +685,15 @@ impl ApplyContext {
     }
 }
 
+/// The main apply loop of the wallet state machine
 pub struct ApplyLoop {
     statemachine: Arc<RwLock<StateMachine>>,
+
     context: ApplyContext,
+
+    /// the consumer side of the raft-based message queue
     receiver: LogEntryReceiver<CommandPb>,
+
     applied_index: u64,
 }
 
@@ -694,6 +718,9 @@ impl ApplyLoop {
         }
     }
 
+    /// The main apply loop is executed by a single thread, which receives committed raft logs
+    /// from the raft-based message queue, applies the command, updates the wallet state machine,
+    /// and generates events.
     pub fn run(&mut self) {
         loop {
             let start_time = Instant::now_coarse();

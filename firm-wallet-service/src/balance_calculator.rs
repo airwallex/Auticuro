@@ -20,9 +20,12 @@ use std::cmp::Ordering;
 use std::ops::Neg;
 use std::str::FromStr;
 
+/// A wrapper of `BigDecimal` to support calculations between arbitrary precision numbers
 pub struct BalanceCalculator;
 
 impl BalanceCalculator {
+    /// Add two numbers, represented by type `&str`
+    /// Example: "12.34" + "0.020" = "12.36"
     pub fn add(&self, lhs: &str, rhs: &str) -> GeneralResult<String> {
         let lhs_decimal = BigDecimal::from_str(lhs)
             .map_err(|err| BalanceOperationError::ParseError(lhs.to_string(), err))?;
@@ -33,6 +36,8 @@ impl BalanceCalculator {
         Ok(result.normalized().to_string())
     }
 
+    /// Calculate the negative of a number, represented by type `&str`
+    /// Example: neg("-12.34") = "12.34"
     pub fn neg(&self, input: &str) -> GeneralResult<String> {
         Ok(BigDecimal::from_str(input)
             .map_err(|err| BalanceOperationError::ParseError(input.to_string(), err))?
@@ -40,6 +45,7 @@ impl BalanceCalculator {
             .to_string())
     }
 
+    /// Compare two numbers, represented by type `&str`
     pub fn cmp(&self, lhs: &str, rhs: &str) -> GeneralResult<Ordering> {
         let lhs_decimal = BigDecimal::from_str(lhs)
             .map_err(|err| BalanceOperationError::ParseError(lhs.to_string(), err))?;

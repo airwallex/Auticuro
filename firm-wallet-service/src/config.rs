@@ -21,10 +21,12 @@ use tikv_util::info;
  */
 #[derive(Clone)]
 pub struct WalletServiceConfig {
+    /// The maximum count of events that is returned by `InternalService.query_events()`
     pub query_events_max_count: u64,
 }
 
 impl WalletServiceConfig {
+    /// The default value for `WalletServiceConfig.query_events_max_count`
     const DEFAULT_QUERY_EVENTS_MAX_COUNT: u64 = 1000;
 }
 
@@ -47,8 +49,13 @@ impl Default for WalletServiceConfig {
  * Cluster Configurations
  */
 pub struct ClusterConfig {
+    /// The raft `cluster_id`
     pub cluster_id: u64,
+
+    /// The number of replicas in the raft cluster
     pub cluster_size: u64,
+
+    /// The raft `store_id`
     pub store_id: u64,
 }
 
@@ -82,9 +89,22 @@ impl Default for ClusterConfig {
  * GC related Configurations
  */
 pub struct EventLogGCConfig {
+    /// The interval between two consecutive idle run of GC.
     pub poll_interval_millis: u64,
+
+    /// The max num of events that GC retains, e.g, count_limit = 1,000,000 means GC retains latest
+    /// 1,000,000 events.
     pub count_limit: u64,
+
+    /// The max num of events that a single delete operation handles.
     pub batch_size: u64,
+
+    /// The percentage of total events(in RocksDB) to be truncated when the GC threshold is reached.
+    /// Example:
+    /// Events range in RocksDB: [10,000,000, 60,010,000], `count_limit` = 50,000,000,
+    /// `percentage` = 0.1. Since (60,010,000 - 10,000,000) > 50,000,000, then
+    /// 50,000,000 * 0.1 = 5,000,000 entries will be truncated. After gc finished, the events in
+    /// RocksDB will start from 10,000,000 + 5,000,000 = 15,000,000
     pub percentage: f64,
 }
 
@@ -180,6 +200,9 @@ impl Default for EventLogGCSetting {
 #[derive(Default)]
 pub struct Config {
     pub wallet_service_config: WalletServiceConfig,
+
+    /// Raft Cluster Config
     pub cluster_config: ClusterConfig,
+
     pub event_log_gc_setting: EventLogGCSetting,
 }

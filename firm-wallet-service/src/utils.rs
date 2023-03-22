@@ -19,6 +19,7 @@ use std::thread;
 use tikv_util::time::{duration_to_ms, Duration, Instant};
 use tikv_util::trace;
 
+/// Try to receive `max_count` elements from a given receiver
 pub fn batch_recv<T>(rx: &mpsc::Receiver<T>, max_count: usize) -> Vec<T> {
     let start = Instant::now();
     let mut buffer = vec![];

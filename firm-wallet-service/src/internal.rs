@@ -39,6 +39,9 @@ use std::marker::PhantomData;
 use std::time::{SystemTime, UNIX_EPOCH};
 use tikv_util::error;
 
+/// The in-mem representation of the `CommandPb`, the command protobuf contains two parts:
+/// 1. header: the common part of a command, which contains: `command_id` and `process_time_in_sec`
+/// 2. payload: the concrete request
 #[derive(Debug)]
 pub struct Command(CommandPb);
 
@@ -85,6 +88,7 @@ impl Command {
     }
 }
 
+/// The in-mem command payload representation for different requests
 pub enum CommandPayload {
     TransferRequest(TransferRequest),
     ReserveRequest(ReserveRequest),
@@ -98,6 +102,8 @@ pub enum CommandPayload {
 }
 
 impl CommandPayload {
+    /// Get `command_id` from the command payload. For different underlying requests, the `dedup_id`
+    /// is used as the `command_id`
     fn command_id(&self) -> &str {
         match self {
             CommandPayload::TransferRequest(request) => request.get_dedup_id(),
@@ -143,6 +149,8 @@ impl CommandPayload {
     }
 }
 
+/// In-mem representation of the `Event` protobuf
+/// An `Event` records the change to the wallet state machine when a `Command` has been handled.
 #[derive(Debug)]
 pub struct Event(EventPb);
 
@@ -151,6 +159,12 @@ impl Event {
         self.0.clone()
     }
 
+    /// Set the event header
+    ///
+    /// 1. command_id: the id of the corresponding command that generates this event
+    /// 2. process_time_in_sec: when the corresponding command is handled
+    /// 3. <log_index, offset>: the position pf the command in the raft log
+    /// 4. seq_num: the global sequence number of the event, facilitating downstream integrity check
     pub fn set_header(
         &mut self,
         command_header: CommandHeader,
@@ -423,6 +437,9 @@ impl Response<UpdateAccountConfigResponse> {
     }
 }
 
+/// Check if a <command, event> pair is of the same type. The wallet service can handle a bunch of
+/// commands. If a `command` is successfully handled, a corresponding event will be generated and
+/// persisted, and their type should match
 pub fn assert_command_and_event_match(command: &Command, event: EventPb) -> GeneralResult<EventPb> {
     let command_type = command.payload();
     let event_type = event.get_payload().event.as_ref().unwrap();

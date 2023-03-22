@@ -30,6 +30,7 @@ use tikv_util::{debug, info};
 
 pub struct EventLogGCLoop {
     rocksdb_state: RocksDBState,
+
     config: EventLogGCConfig,
 }
 
@@ -41,6 +42,11 @@ impl EventLogGCLoop {
         }
     }
 
+    /// The single-threaded gc loop. The loop logic:
+    /// 1. Read the `PERSISTED_FIRST_SEQ_NUM` and `PERSISTED_LAST_SEQ_NUM` from rocksDB
+    /// 2. Check if events range: [PERSISTED_FIRST_SEQ_NUM, PERSISTED_LAST_SEQ_NUM] reaches gc limit
+    ///    specifically, (PERSISTED_LAST_SEQ_NUM - PERSISTED_FIRST_SEQ_NUM) > `self.config
+    ///    .count_limit`. If true, gc from `PERSISTED_FIRST_SEQ_NUM`
     pub fn run(&mut self) {
         loop {
             let first_seq_num = self
