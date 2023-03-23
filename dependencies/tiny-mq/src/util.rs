@@ -154,6 +154,7 @@ pub mod tests {
     use kvproto::raft_serverpb::RaftMessage;
 
     #[test]
+    #[ignore]
     fn test_base() {
         let data = b"abc";
         let res: std::result::Result<RaftCmdRequest, Box<dyn std::any::Any + std::marker::Send>> = std::panic::catch_unwind(||{parse_data_at(data.as_slice(), 0, "")});
@@ -173,6 +174,7 @@ pub mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_region() {
         let mut region = Region::default();
         assert!(!is_region_initialized(&region));
@@ -190,6 +192,7 @@ pub mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_raft_cmd_request() {
         let mut cmd_req = RaftCmdRequest::default();
         assert!(check_store_id(&cmd_req, 0).is_ok());

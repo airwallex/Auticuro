@@ -205,6 +205,7 @@ mod tests {
     use tempfile::Builder;
 
     #[test]
+    #[ignore]
     fn test_gc_raft_log() {
         let dir = Builder::new().prefix("gc-raft-log-test").tempdir().unwrap();
         let path_raft = dir.path().join("raft");

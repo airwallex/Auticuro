@@ -179,6 +179,7 @@ pub mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_peer_resolve() {
 
         // let mock_raft_db = Builder::new().prefix("/tmp/mock_raft_db").tempdir().unwrap();

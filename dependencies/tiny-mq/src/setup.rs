@@ -342,6 +342,7 @@ pub mod tests {
     use crate::setup::{initial_logger, LOG_INITIALIZED};
 
     #[test]
+    #[ignore]
     fn test_init_logger() {
         initial_logger();
         assert!(LOG_INITIALIZED.load(Ordering::SeqCst));

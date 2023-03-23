@@ -11,7 +11,11 @@ sh scripts/setup_for_ubuntu.sh
 sh scripts/setup_for_mac.sh
 ```
 
+`brew install` needs admin permission, check [here](https://crunchify.com/getting-permission-denied-error-while-executing-macos-homebrew-command/) if you got 
+permission errors. 
+
 ### 1.2. Build
+The build takes 5-20 min, depending on your machine
 ```
 cargo build --release
 ```
@@ -21,10 +25,25 @@ cargo build --release
 sh scripts/start_cluster.sh
 ```
 
+Usually, within 5 seconds, the cluster starts up successfully, and one peer becomes leader and
+print:
+
+```
+[2023/03/23 10:29:49.327 +08:00] [INFO] [raft.rs:1200] ["became leader at term 22"] [term=22] [raft_id=1] [region_id=1]
+[2023/03/23 10:29:49.327 +08:00] [INFO] [peer.rs:858] ["becomes leader with lease"] [peer_id=1] [region_id=1]
+```
+
 ### 1.4. Send Requests to the Cluster
 Create two accounts, and transfer money from one account to another, then check their balance and balance change history.
 ```
 sh scripts/transfer_example.sh
+```
+
+The `start_cluster.sh` terminal will print:
+```
+[2023/03/23 11:12:47.303 +08:00] [INFO] [account.rs:55] ["Account created for ben with initial balance 0.0"]
+[2023/03/23 11:12:47.318 +08:00] [INFO] [account.rs:55] ["Account created for tony with initial balance 0.0"]
+[2023/03/23 11:12:47.337 +08:00] [INFO] [service.rs:860] ["Wallet.transfer() is called, elapsed: 2ms, response: header {seq_num: 3 log_index: 9} request {dedup_id: \"1234567890\" transfer_spec {amount: \"100\" from_account_id: \"tony\" to_account_id: \"ben\"}} from {account_id: \"tony\" prev_balance {available: \"0.0\"} curr_balance {available: \"-100\"}} to {account_id: \"ben\" prev_balance {available: \"0.0\"} curr_balance {available: \"100\"}}"]
 ```
 
 ## 2. The detailed Guide
@@ -107,7 +126,7 @@ cargo test --release
 - Generate the test coverage report
   The report will be auto-open in the browser
 ```
-cd firm-wallet
+cd Auticuro
 sh scripts/run_test_coverage.sh
 ```
 
@@ -128,7 +147,7 @@ It will start a 5-node `firm-wallet-service` cluster and a `firm-wallet-gateway`
 requests to the leader node of `firm-wallet-service` cluster. 
 
 ```
-cd firm-wallet
+cd Auticuro
 
 sh scripts/start_cluster.sh
 
@@ -140,11 +159,11 @@ sh scripts/start_cluster.sh
 To start all 5 raft nodes manually, execute the`run_node.sh` script with a store id:
 ```
 # Start the firm-wallet-gateway
-cd firm-wallet/firm-wallet-gateway
+cd Auticuro/firm-wallet-gateway
 sh run_gateway.sh
 
 # Change dir to firm-wallet-service
-cd firm-wallet/firm-wallet-service
+cd Auticuro/firm-wallet-service
 
 # Start 5 nodes, open a new termial for each node
 sh run_node.sh 1

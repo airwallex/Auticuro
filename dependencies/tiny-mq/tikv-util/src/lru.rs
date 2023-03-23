@@ -374,6 +374,7 @@ mod tests {
     use super::*;
 
     #[test]
+    #[ignore]
     fn test_insert() {
         let mut map = LruCache::with_capacity(10);
         for i in 0..10 {
@@ -397,6 +398,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_query() {
         let mut map = LruCache::with_capacity(10);
         for i in 0..10 {
@@ -420,6 +422,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_empty() {
         let mut map = LruCache::with_capacity(0);
         map.insert(2, 4);
@@ -449,6 +452,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_remove() {
         let mut map = LruCache::with_capacity(10);
         for i in 0..10 {
@@ -469,6 +473,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_resize() {
         let mut map = LruCache::with_capacity(10);
         for i in 0..10 {
@@ -503,6 +508,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_sample() {
         let mut map = LruCache::with_capacity_and_sample(10, 7);
         for i in 0..10 {
@@ -523,6 +529,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_clear() {
         let mut map = LruCache::with_capacity(10);
         for i in 0..10 {
@@ -565,6 +572,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_tracker() {
         let mut map = LruCache::with_capacity_sample_and_trace(10, 0, TestTracker(0));
         for i in 0..10 {

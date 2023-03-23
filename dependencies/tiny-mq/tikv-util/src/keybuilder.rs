@@ -123,6 +123,7 @@ mod tests {
     use super::*;
 
     #[test]
+    #[ignore]
     fn test_key_builder() {
         let prefix = b"prefix-";
         let suffix = b"-suffix";

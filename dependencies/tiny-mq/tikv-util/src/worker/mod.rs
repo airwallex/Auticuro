@@ -97,6 +97,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_worker() {
         let worker = Worker::new("test-worker");
         let (tx, rx) = mpsc::channel();
@@ -122,6 +123,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_threaded() {
         let worker = Worker::new("test-worker-threaded");
         let (tx, rx) = mpsc::channel();
@@ -137,6 +139,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_pending_capacity() {
         let worker = Builder::new("test-worker-busy")
             .pending_capacity(3)

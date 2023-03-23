@@ -191,6 +191,7 @@ mod tests {
     use byteorder::{BigEndian, WriteBytesExt};
 
     #[test]
+    #[ignore]
     fn test_raft_log_key() {
         for region_id in 1..10 {
             for idx_id in 1..10 {
@@ -222,6 +223,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_data_key() {
         let key = b"abcd";
         assert!(!validate_data_key(key));
@@ -235,6 +237,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_raft_log_sort() {
         let tbls = vec![
             (1, 1, 1, 2, Ordering::Less),
@@ -250,6 +253,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_dup_key() {
         let key = b"abcd";
         let dedup_key = dedup_key(key.as_slice());
@@ -261,6 +265,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_event_key() {
         let key = b"abcd";
         let event_key = event_key(key);

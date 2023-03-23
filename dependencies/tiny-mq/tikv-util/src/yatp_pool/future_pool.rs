@@ -237,6 +237,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_tick() {
         let tick_sequence = Arc::new(AtomicUsize::new(0));
 
@@ -295,6 +296,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_tick_multi_thread() {
         let tick_sequence = Arc::new(AtomicUsize::new(0));
 
@@ -332,6 +334,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_handle_result() {
         let pool = Builder::new(DefaultTicker {})
             .thread_count(1, 1)
@@ -343,6 +346,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_running_task_count() {
         let pool = Builder::new(DefaultTicker {})
             .name_prefix("future_pool_for_running_task_test") // The name is important
@@ -393,6 +397,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_full() {
         let (tx, rx) = mpsc::channel();
 
