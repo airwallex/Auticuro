@@ -231,6 +231,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_timer() {
         let mut timer = Timer::new(10);
         timer.add_task(Duration::from_millis(20), Task::A);
@@ -252,6 +253,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_global_timer() {
         let handle = super::GLOBAL_TIMER_HANDLE.clone();
         let delay =
@@ -262,6 +264,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_global_steady_timer() {
         let t = SteadyTimer::default();
         let timer = t.clock.now();

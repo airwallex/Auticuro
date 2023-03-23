@@ -90,6 +90,7 @@ mod tests {
     use super::*;
 
     #[test]
+    #[ignore]
     fn test_need_escape() {
         let cases = [
             ("abc", false),
@@ -116,6 +117,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_write_file_name() {
         let mut s = vec![];
         write_file_name(

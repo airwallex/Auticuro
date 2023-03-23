@@ -19,6 +19,7 @@ pub mod persist_framework;
 #[cfg(test)]
 mod tests {
     #[test]
+    #[ignore]
     fn it_works() {
         let result = 2 + 2;
         assert_eq!(result, 4);

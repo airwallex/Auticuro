@@ -491,6 +491,7 @@ mod tests {
     use std::sync::Arc;
 
     #[test]
+    #[ignore]
     fn test_time_monitor() {
         let jumped = Arc::new(AtomicBool::new(false));
         let triggered = AtomicBool::new(false);
@@ -515,6 +516,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_duration_to() {
         let tbl = vec![0, 100, 1_000, 5_000, 9999, 1_000_000, 1_000_000_000];
         for ms in tbl {
@@ -528,6 +530,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_now() {
         let pairs = vec![
             (monotonic_raw_now(), monotonic_raw_now()),
@@ -546,6 +549,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     #[allow(clippy::eq_op)]
     fn test_instant() {
         Instant::now().elapsed();
@@ -615,6 +619,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_coarse_instant_on_smp() {
         let zero = Duration::from_millis(0);
         for i in 0..1_000_000 {

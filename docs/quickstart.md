@@ -11,7 +11,11 @@ sh scripts/setup_for_ubuntu.sh
 sh scripts/setup_for_mac.sh
 ```
 
+`brew install` needs admin permission, check [here](https://crunchify.com/getting-permission-denied-error-while-executing-macos-homebrew-command/) if you got 
+permission error. 
+
 ### 1.2. Build
+The build takes 5-20 min, depends on your machine
 ```
 cargo build --release
 ```
@@ -107,7 +111,7 @@ cargo test --release
 - Generate the test coverage report
   The report will be auto-open in the browser
 ```
-cd firm-wallet
+cd Auticuro
 sh scripts/run_test_coverage.sh
 ```
 
@@ -128,11 +132,19 @@ It will start a 5-node `firm-wallet-service` cluster and a `firm-wallet-gateway`
 requests to the leader node of `firm-wallet-service` cluster. 
 
 ```
-cd firm-wallet
+cd Auticuro
 
 sh scripts/start_cluster.sh
 
 # Press `Ctrl + C` to shutdown the cluster
+```
+
+Usually, within 5 seconds, the cluster start up successfully, and one peer will become leader and 
+print:
+
+```
+[2023/03/23 10:29:49.327 +08:00] [INFO] [raft.rs:1200] ["became leader at term 22"] [term=22] [raft_id=1] [region_id=1]
+[2023/03/23 10:29:49.327 +08:00] [INFO] [peer.rs:858] ["becomes leader with lease"] [peer_id=1] [region_id=1]
 ```
 
 - Manually Start
@@ -140,11 +152,11 @@ sh scripts/start_cluster.sh
 To start all 5 raft nodes manually, execute the`run_node.sh` script with a store id:
 ```
 # Start the firm-wallet-gateway
-cd firm-wallet/firm-wallet-gateway
+cd Auticuro/firm-wallet-gateway
 sh run_gateway.sh
 
 # Change dir to firm-wallet-service
-cd firm-wallet/firm-wallet-service
+cd Auticuro/firm-wallet-service
 
 # Start 5 nodes, open a new termial for each node
 sh run_node.sh 1

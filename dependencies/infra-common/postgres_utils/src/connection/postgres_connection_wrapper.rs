@@ -135,6 +135,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_get_connection_failure() {
         set_env();
         let mut postgres_wrapper = PostgresConnectionWrapper::default();

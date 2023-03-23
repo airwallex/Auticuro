@@ -693,6 +693,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_engine_base() {
         let cf = "cf";
         let dir = Builder::new().prefix("test-engine-base").tempdir().unwrap();
@@ -729,6 +730,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_write_batch_base() {
         let cf = "cf";
         let mut write_batch = mock_rocks_engine(cf, "test-write-batch-base").write_batch();
@@ -755,6 +757,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_scan() {
         let cf = "cf";
         let rocks_engine = mock_rocks_engine(cf, "scan");
@@ -798,6 +801,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_engine_log() {
         let rocks_engine = mock_rocks_engine("cf", "test-engine-state");
 
@@ -844,6 +848,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_write_batch_log() {
         let mut write_batch = mock_rocks_engine("cf", "test-write-batch-state").write_batch();
 

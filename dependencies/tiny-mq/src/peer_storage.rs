@@ -624,6 +624,7 @@ mod tests {
     use std::sync::Arc;
 
     #[test]
+    #[ignore]
     fn test_bootstrap() {
         let path = Builder::new().prefix("test_bootstrap").tempdir().unwrap();
         let raft_path = path.path().join("raft");

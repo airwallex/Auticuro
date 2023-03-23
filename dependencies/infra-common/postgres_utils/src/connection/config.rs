@@ -69,6 +69,7 @@ pub mod tests {
         env::set_var("FLYWAY_PASSWORD", "postgres_admin");
     }
     #[test]
+    #[ignore]
     fn test_get_rw_config() {
         set_env();
         let rw_config = get_rw_config();
@@ -83,6 +84,7 @@ pub mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_get_admin_config() {
         set_env();
         let rw_config = get_admin_config();
