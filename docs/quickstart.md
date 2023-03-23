@@ -12,10 +12,10 @@ sh scripts/setup_for_mac.sh
 ```
 
 `brew install` needs admin permission, check [here](https://crunchify.com/getting-permission-denied-error-while-executing-macos-homebrew-command/) if you got 
-permission error. 
+permission errors. 
 
 ### 1.2. Build
-The build takes 5-20 min, depends on your machine
+The build takes 5-20 min, depending on your machine
 ```
 cargo build --release
 ```
@@ -25,10 +25,25 @@ cargo build --release
 sh scripts/start_cluster.sh
 ```
 
+Usually, within 5 seconds, the cluster starts up successfully, and one peer becomes leader and
+print:
+
+```
+[2023/03/23 10:29:49.327 +08:00] [INFO] [raft.rs:1200] ["became leader at term 22"] [term=22] [raft_id=1] [region_id=1]
+[2023/03/23 10:29:49.327 +08:00] [INFO] [peer.rs:858] ["becomes leader with lease"] [peer_id=1] [region_id=1]
+```
+
 ### 1.4. Send Requests to the Cluster
 Create two accounts, and transfer money from one account to another, then check their balance and balance change history.
 ```
 sh scripts/transfer_example.sh
+```
+
+The `start_cluster.sh` terminal will print:
+```
+[2023/03/23 11:12:47.303 +08:00] [INFO] [account.rs:55] ["Account created for ben with initial balance 0.0"]
+[2023/03/23 11:12:47.318 +08:00] [INFO] [account.rs:55] ["Account created for tony with initial balance 0.0"]
+[2023/03/23 11:12:47.337 +08:00] [INFO] [service.rs:860] ["Wallet.transfer() is called, elapsed: 2ms, response: header {seq_num: 3 log_index: 9} request {dedup_id: \"1234567890\" transfer_spec {amount: \"100\" from_account_id: \"tony\" to_account_id: \"ben\"}} from {account_id: \"tony\" prev_balance {available: \"0.0\"} curr_balance {available: \"-100\"}} to {account_id: \"ben\" prev_balance {available: \"0.0\"} curr_balance {available: \"100\"}}"]
 ```
 
 ## 2. The detailed Guide
@@ -137,14 +152,6 @@ cd Auticuro
 sh scripts/start_cluster.sh
 
 # Press `Ctrl + C` to shutdown the cluster
-```
-
-Usually, within 5 seconds, the cluster start up successfully, and one peer will become leader and 
-print:
-
-```
-[2023/03/23 10:29:49.327 +08:00] [INFO] [raft.rs:1200] ["became leader at term 22"] [term=22] [raft_id=1] [region_id=1]
-[2023/03/23 10:29:49.327 +08:00] [INFO] [peer.rs:858] ["becomes leader with lease"] [peer_id=1] [region_id=1]
 ```
 
 - Manually Start
