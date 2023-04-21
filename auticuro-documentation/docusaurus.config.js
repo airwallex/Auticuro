@@ -14,7 +14,7 @@ const config = {
   url: 'https://financial_platform.pages.awx.im',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/the-hologram/auticuro-documentation/',
+  baseUrl: '/Auticuro/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
