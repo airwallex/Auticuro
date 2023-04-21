@@ -78,7 +78,7 @@ const config = {
           },
           {to: '/blog', label: 'Blog', position: 'left'},
           {
-            href: 'https://gitlab.awx.im/financial_platform/open_source/firm-wallet/-/tree/master',
+            href: 'https://github.com/airwallex/Auticuro',
             label: 'Source',
             position: 'right',
           },
