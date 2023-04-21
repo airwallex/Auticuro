@@ -1,0 +1,8 @@
+{
+  "label": "Query Side",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "the tech design"
+  }
+}

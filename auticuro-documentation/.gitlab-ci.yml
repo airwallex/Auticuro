@@ -1,0 +1,35 @@
+include:
+  - project: "devops/gitlab-ci-template"
+    ref: master
+    file: "/.gitlab/ci/build-setup.gitlab-ci.yml"
+  - project: "devops/gitlab-ci-template"
+    ref: master
+    file: "/gitops.gitlab-ci.yml"
+
+stages:
+  - Build and Test
+  - Publish
+
+build:
+  stage: Build and Test
+  image: node:latest
+  script:
+#    - npm run build
+  - yarn install
+  - yarn build
+
+# Important(and tricky!), gitlab will generate Pages only when it finds the job with name="pages"
+# Ref: https://docs.gitlab.com/15.7/ee/user/project/pages/getting_started/pages_from_scratch.html#install-jekyll
+pages:
+  stage: Publish
+  image: node:latest
+  script:
+    - yarn install
+    - yarn build
+    - mv ./build ./public
+
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
