@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - "feature/A-3"
+      - "master"
 
 
   # Allows you to run this workflow manually from the Actions tab
