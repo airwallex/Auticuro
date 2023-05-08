@@ -3,7 +3,7 @@ name: deploy-gh-pages
 on:
   push:
     branches:
-      - "feature/A-3"
+      - "feature/A-5"
       - "master"
 
 

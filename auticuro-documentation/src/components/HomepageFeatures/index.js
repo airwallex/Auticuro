@@ -8,7 +8,7 @@ const FeatureList = [
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-          Simple account management APIs and composable balance operation APIs for
+          Simple account management APIs and composable funds operation APIs for
           seamless handling of various financial transactions.
       </>
     ),
@@ -18,7 +18,7 @@ const FeatureList = [
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-          Auticuro leverages the Raft algorithm to provide strong consistency and reliability.
+          Auticuro leverages the Raft algorithm to provide strong consistency, dependability and reliability.
       </>
     ),
   },
