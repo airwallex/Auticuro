@@ -2,7 +2,6 @@
   "label": "Transactional APIs",
   "position": 3,
   "link": {
-    "type": "generated-index",
-    "description": "Transactional APIs"
+    "type": "generated-index"
   }
 }

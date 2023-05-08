@@ -116,7 +116,7 @@ TransactionSection is a mapping from transactionId to its PendingIn amount and P
 
 ReservedSection is a mapping from reservationId to its reserved amount, which supports Reserve, IncrementalReserve, Release, and PartialRelease interface.
 
-The Reserve** **interface allows reserving an amount of money within an account for future usage purposes by moving the money from the available section to the reserved section. The only permitted operation on that reserved money is the Release interface which moves the money back to the available section. IncrementalReserve and PartialRelease are just variants of Reserve and Release.
+The Reserve interface allows reserving an amount of money within an account for future usage purposes by moving the money from the available section to the reserved section. The only permitted operation on that reserved money is the Release interface which moves the money back to the available section. IncrementalReserve and PartialRelease are just variants of Reserve and Release.
 
 The Configuration contains fields like UpperLimit, LowerLimit, State, Currency, and Version, which could be updated by UpdateUpperLimit, UpdateLowerLimit, LockAccount, and UnlockAccount interface.
 

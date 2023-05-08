@@ -15,6 +15,15 @@ ensure atomicity for multiple balance operations.
 and high-availability(RTO <= **4s** for fault recovery), which make it a suitable cornerstone for critical financial
 applications.
 
+## Who can use Auticuro?
+![image info](@site/static/img/overview/Auticuro-use-cases.svg)
+
+- A wallet service that tracks the balance and history of wallets, can be used by Banks, Fintech companies, 
+  E-commerce platforms, etc.
+- An app to track UTXO of cryptocurrencies
+- A financial instrument repo that tracks the position and history of stock, bond, future, option, credit
+- A settlement solution for clearing house to ensure simultaneous exchange between two counterparties
+
 ## Auticuro Features Overview
 **Functional:**
 - **Payment processing**: Ensures that money movement or payment is processed without duplication or 
