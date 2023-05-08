@@ -5,7 +5,7 @@ import styles from './styles.module.css';
 const FeatureList = [
   {
     title: 'Comprehensive Financial Management',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    Svg: require('@site/static/img/index_page/management.svg').default,
     description: (
       <>
           Simple account management APIs and composable funds operation APIs for
@@ -15,7 +15,7 @@ const FeatureList = [
   },
   {
     title: 'Exceptional Reliability',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    Svg: require('@site/static/img/index_page/reliability.svg').default,
     description: (
       <>
           Auticuro leverages the Raft algorithm to provide strong consistency, dependability and reliability.
@@ -24,7 +24,7 @@ const FeatureList = [
   },
   {
     title: 'Blazing Fast',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    Svg: require('@site/static/img/index_page/fast.svg').default,
     description: (
       <>
           Designed for speed, Auticuro achieves outstanding throughput with extremely low and predictable latency.
