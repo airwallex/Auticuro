@@ -4,6 +4,10 @@ sidebar_position: 1
 
 # Auticuro Overview
 
+## What is Auticuro?
+**Auticuro** is a combination of two words: **Au** and **Curo**. **Au** means gold in Latin(aurum) and
+**Curo** means protect in Italian.
+
 **Auticuro** is a high performance, strong consistent, distributed wallet service fitting for mission-critical financial
 applications. It provides account management and balance operation functionalities, which could be used to build composite
 money movement functionalities required by customers.

@@ -4,31 +4,33 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'Comprehensive Financial Management',
+    title: 'Professional Financial Management',
     Svg: require('@site/static/img/index_page/management.svg').default,
     description: (
-      <>
-          Simple account management APIs and composable funds operation APIs for
-          seamless handling of various financial transactions.
-      </>
+        <p style={{whiteSpace:"pre-wrap"}}>{`Support all asset classes
+Composable balance operations
+Easy integration with ERP`
+        }</p>
     ),
   },
   {
-    title: 'Exceptional Reliability',
+    title: 'Proven Reliability',
     Svg: require('@site/static/img/index_page/reliability.svg').default,
     description: (
-      <>
-          Auticuro leverages the Raft algorithm to provide strong consistency, dependability and reliability.
-      </>
+      <p style={{whiteSpace:"pre-wrap"}}>{`Blockchain-ed transaction record
+Advanced consensus algorithm
+Cloud native architecture`
+      }</p>
     ),
   },
   {
-    title: 'Blazing Fast',
+    title: 'Performance',
     Svg: require('@site/static/img/index_page/fast.svg').default,
     description: (
-      <>
-          Designed for speed, Auticuro achieves outstanding throughput with extremely low and predictable latency.
-      </>
+        <p style={{whiteSpace:"pre-wrap"}}>{`Unlimited scalability
+10,000 TPS for single account
+10 millisecond latency (5K TPS)`
+        }</p>
     ),
   },
 ];
