@@ -19,6 +19,8 @@ ensure atomicity for multiple balance operations.
 and high-availability(RTO <= **4s** for fault recovery), which make it a suitable cornerstone for critical financial
 applications.
 
+![image info](@site/static/img/evaluation/latency_distribution.gif)
+
 ## Who can use Auticuro?
 ![image info](@site/static/img/overview/Auticuro-use-cases.svg)
 
