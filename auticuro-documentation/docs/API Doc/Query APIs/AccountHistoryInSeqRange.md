@@ -11,7 +11,7 @@ sidebar_position: 3
 Auticuro preserves all the change history for a given account, including balances and state, and configuration.
 
 Given an *account_id* and seq_num range, `AccountHistoryInSeqRange` retrieves the history of account change at every
-seq_num within **[start_seq_num, end_seq_num)**. In case that input seq_num range out competes what service can provide, only
+seq_num within _[start_seq_num, end_seq_num)_. In case that input seq_num range out competes what service can provide, only
 available account history is partially returned.
 
 ### Definitions

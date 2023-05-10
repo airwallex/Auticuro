@@ -8,7 +8,7 @@ account ID. If successful, the account is deleted and the response contains the 
 
 Pre-checks:
 - available balance == 0
-- no pending_in or pending_out transactions
+- no _pending_in_ or _pending_out_ transactions
 - no reservations
 
 ```protobuf

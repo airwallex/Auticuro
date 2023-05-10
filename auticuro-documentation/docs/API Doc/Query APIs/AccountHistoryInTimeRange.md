@@ -11,7 +11,7 @@ sidebar_position: 4
 Besides in the range of seq_num, account history could also be retrieved in the range of time.
 
 Given an *account_id* and time range, `AccountHistoryInTimeRange` retrieves the history of account change happened 
-during **[start_timestamp, end_timestamp)**. Timestamp support human-readable time with a timezone and Unix Epoch. 
+during _[start_timestamp, end_timestamp)_. Timestamp support human-readable time with a timezone and Unix Epoch. 
 
 ### Definitions
 

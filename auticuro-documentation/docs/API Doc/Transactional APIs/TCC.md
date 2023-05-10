@@ -11,12 +11,12 @@ reserved resources are confirmed. If the transaction needs to be rolled back, th
 
 The TCC can be divided into 3 parts
 - Try: attempts to execute, completes all business checks (consistency), reserves necessary 
-business resources(for quasi-isolation).
+business resources(for quasi-isolation)
 - Confirm: if all branches succeed in the Try phase, then we move to the Confirm phase, 
   where Confirm actually executes the business without any business checks, using only the business 
-- resources reserved in the Try phase
+- Resources reserved in the Try phase
 - Cancel: If one of the Trys in all branches fails, we go to the Cancel phase, which 
-  releases the business resources reserved in the Try phase.
+  releases the business resources reserved in the Try phase
 
 ### Tcc interfaces
 Currently the `BatchBalanceOperation` interface is supported in TCC mode. TCC Transactions among 
@@ -32,14 +32,14 @@ interface.
 ### Try
 For each account in the `batch_balance_operation`, checks include:
 - The account is in `Normal` state
-- The account balance after the request handling is within the `[lower limit, upper limit]`
+- The account balance after the request handling is within the _[lower limit, upper limit]_
 
 If all pre-checks pass:
-- For money increasing operations, add an entry: `txn_id -> amount` in the `pending_in` map of the account
-- For money decreasing operations, moving the `amount` of money from `avaliable` to an entry 
-  `txn_id -> amount` in 
+- For money increasing operations, add an entry: _txn_id -> amount_ in the _pending_in_ map of the account
+- For money decreasing operations, moving the amount of money from _avaliable_ to an entry 
+  _txn_id -> amount_ in 
   the 
-  `pending_out` map of the account
+  _pending_out_ map of the account
 
 ```protobuf
 message TccTryRequest {
@@ -63,9 +63,9 @@ message TccTryResponse {
 
 ### Confirm
 Request handling:
-- Search the entry by `txn_id` in the `pending_out` or `pending_in` map of the account
-- If the entry is found in `pending_out`, remove the entry
-- If the entry is found in `pending_in`, move the `amount` from the entry to `available`
+- Search the entry by _txn_id_ in the _pending_out_ or _pending_in_ map of the account
+- If the entry is found in _pending_out_, remove the entry
+- If the entry is found in _pending_in_, move the `amount` from the entry to _available_
 
 ```protobuf
 message TccConfirmRequest {
@@ -87,9 +87,9 @@ message TccConfirmResponse {
 
 ### Cancel
 Request handling:
-- Search the entry by `txn_id` in the `pending_out` or `pending_in` map of the account
-- If the entry is found in `pending_out`, move the `amount` from the found entry to `available`
-- If the entry is found in `pending_in`, remove the entry
+- Search the entry by _txn_id_ in the _pending_out_ or _pending_in_ map of the account
+- If the entry is found in _pending_out_, move the `amount` from the found entry to _available_
+- If the entry is found in _pending_in_, remove the entry
 
 ```protobuf
 message TccCancelRequest {

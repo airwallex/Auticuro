@@ -9,7 +9,7 @@ sidebar_position: 1
 ### Description
 
 `BatchAccountBalance` is a batch API for `AccountBalance` that takes a list of account ids and returns their balances.
-For this batch API, a non-zero *seq_num* must be specified to return a snapshot view of all accounts at the same seq_num.
+For this batch API, a non-zero *seq_num* must be specified to return a snapshot view of all accounts at the same _seq_num_.
 
 In case of the input account ids are partially found in the system, the unavailable accounts are specified in response. 
 

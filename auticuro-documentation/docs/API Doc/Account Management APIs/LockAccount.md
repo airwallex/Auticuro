@@ -6,7 +6,7 @@ sidebar_position: 3
 
 Lock an account with the given account ID. Pre-checks are performed to ensure that the account:
 - available balance == 0
-- no pending_in or pending_out transactions
+- no _pending_in_ or _pending_out_ transactions
 - no reservations
 
 If successful, the account is locked and no balance operations can be performed on the account until

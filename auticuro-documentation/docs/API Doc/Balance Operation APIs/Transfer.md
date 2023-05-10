@@ -3,25 +3,25 @@ sidebar_position: 1
 ---
 
 # Transfer
-Transfer money from the `from` account to the `to` account. Checks will be conducted for both
-the `from` and `to` account. 
+Transfer money from the _from_ account to the _to_ account. Checks will be conducted for both
+the _from_ and _to_ account. 
   - The account is in `Normal` state
-  - The account balance after the transfer is within the `[lower limit, upper limit]` 
+  - The account balance after the transfer is within the _[lower limit, upper limit]_
   - The account currency is the same as the currency in the transfer request
 
 ### Usage Scenario
 - **Basic Usage**:
-Bilateral money transfer from one account to another account.
+Bilateral money transfer from one account to another account
 
 - **Advanced Usage**:
 CAS-style check on balance is provided to implement an optimistic lock.
 If setting fields expected_from_balance / expected_to_balance for pre-checks, the transfer 
-fails if any of the pre-checks fails.
+fails if any of the pre-checks fails
 
-`expected_from_balance`: If set, the balance of the from_account before transfer MUST == the 
+_expected_from_balance_: If set, the balance of the _from_account_ before transfer MUST == the 
   expected_from_balance.
 
-`expected_to_balance`: If set, the balance of the to_account before transfer MUST == the 
+_expected_to_balance_: If set, the balance of the _to_account_ before transfer MUST == the 
   expected_to_balance
 
 ```protobuf
