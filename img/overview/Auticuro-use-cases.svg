@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="977.75 7704.75 697.5 358.25" width="697.5" height="358.25">
+  <defs>
+    <filter id="Shadow" filterUnits="userSpaceOnUse" x="908" y="7668.925">
+      <feGaussianBlur in="SourceAlpha" result="blur" stdDeviation="1.308"/>
+      <feOffset in="blur" result="offset" dx="0" dy="2"/>
+      <feFlood flood-color="black" flood-opacity=".5" result="flood"/>
+      <feComposite in="flood" in2="offset" operator="in" result="color"/>
+      <feMerge>
+        <feMergeNode in="color"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-1 -3 6 6" markerWidth="6" markerHeight="6" color="#a5a5a5">
+      <g>
+        <path d="M 3.7333333 0 L 0 -1.4 L 0 1.4 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+  </defs>
+  <g id="firm_wallet" fill="none" stroke-opacity="1" stroke="none" fill-opacity="1" stroke-dasharray="none">
+    <title>firm wallet</title>
+    <rect fill="white" x="977.75" y="7704.75" width="697.5" height="358.25"/>
+    <g id="firm_wallet_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_206" filter="url(#Shadow)">
+        <rect x="980.75" y="7705.75" width="691.5" height="352.25" fill="#666"/>
+      </g>
+      <g id="Line_197">
+        <line x1="1391" y1="7926.626" x2="1509.8514" y2="7997.34" marker-end="url(#FilledArrow_Marker)" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+      </g>
+      <g id="Line_198">
+        <line x1="1386.0664" y1="7947.5" x2="1432.2792" y2="7993.467" marker-end="url(#FilledArrow_Marker)" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+      </g>
+      <g id="Line_199">
+        <line x1="1346.0497" y1="7947.5" x2="1359.9342" y2="7989.58" marker-end="url(#FilledArrow_Marker)" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+      </g>
+      <g id="Line_200">
+        <line x1="1306.0327" y1="7947.5" x2="1291.472" y2="7989.651" marker-end="url(#FilledArrow_Marker)" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+      </g>
+      <g id="Line_201">
+        <line x1="1267.3763" y1="7947.5" x2="1221.5497" y2="7993.425" marker-end="url(#FilledArrow_Marker)" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+      </g>
+      <g id="Line_202">
+        <line x1="1262" y1="7926.626" x2="1143.1486" y2="7997.34" marker-end="url(#FilledArrow_Marker)" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+      </g>
+      <g id="Line_183">
+        <line x1="1079.8689" y1="7757.8205" x2="1247.9445" y2="7846.706" marker-end="url(#FilledArrow_Marker)" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+      </g>
+      <g id="Line_184">
+        <line x1="1180.712" y1="7757.8205" x2="1250.9606" y2="7820.6685" marker-end="url(#FilledArrow_Marker)" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+      </g>
+      <g id="Line_185">
+        <line x1="1281.5552" y1="7757.8205" x2="1300.903" y2="7813.9675" marker-end="url(#FilledArrow_Marker)" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+      </g>
+      <g id="Line_186">
+        <line x1="1573.131" y1="7757.8205" x2="1405.0555" y2="7846.706" marker-end="url(#FilledArrow_Marker)" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+      </g>
+      <g id="Line_187">
+        <line x1="1379.6213" y1="7757.8205" x2="1356.6287" y2="7814.2745" marker-end="url(#FilledArrow_Marker)" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+      </g>
+      <g id="Line_188">
+        <line x1="1480.4644" y1="7757.8205" x2="1403.1178" y2="7823.344" marker-end="url(#FilledArrow_Marker)" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+      </g>
+      <g id="Graphic_177" filter="url(#Shadow)">
+        <path d="M 1267 7829 L 1386 7829 C 1388.7614 7829 1391 7831.239 1391 7834 L 1391 7942.5 C 1391 7945.261 1388.7614 7947.5 1386 7947.5 L 1267 7947.5 C 1264.2386 7947.5 1262 7945.261 1262 7942.5 L 1262 7834 C 1262 7831.239 1264.2386 7829 1267 7829 Z" fill="#333"/>
+        <path d="M 1267 7829 L 1386 7829 C 1388.7614 7829 1391 7831.239 1391 7834 L 1391 7942.5 C 1391 7945.261 1388.7614 7947.5 1386 7947.5 L 1267 7947.5 C 1264.2386 7947.5 1262 7945.261 1262 7942.5 L 1262 7834 C 1262 7831.239 1264.2386 7829 1267 7829 Z" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Group_172">
+        <g id="Graphic_171">
+          <path d="M 1315.2572 7860.455 L 1324.418 7860.455 L 1302.3488 7891.269 L 1293.188 7891.269 Z" fill="#ffb23f"/>
+        </g>
+        <g id="Graphic_170">
+          <path d="M 1337.7428 7860.455 L 1328.582 7860.455 L 1350.6512 7891.269 L 1359.812 7891.269 Z" fill="#ffb23f"/>
+        </g>
+        <g id="Graphic_169">
+          <path d="M 1350.4409 7901.575 L 1326.8123 7866.285 L 1303.1837 7901.575 L 1314.3359 7901.575 L 1326.8123 7882.941 L 1339.2887 7901.575 Z" fill="#ffb23f"/>
+        </g>
+        <g id="Graphic_168">
+          <path d="M 1326.8123 7890.644 L 1334.4116 7902.095 L 1319.213 7902.095 Z" fill="#ffb23f"/>
+        </g>
+        <g id="Graphic_167">
+          <path d="M 1357.3136 7906.676 L 1295.4782 7906.676 L 1296.5886 7908.341 L 1356.2033 7908.341 Z" fill="#ffb23f"/>
+        </g>
+        <g id="Graphic_166">
+          <path d="M 1355.648 7909.174 L 1297.1438 7909.174 L 1301.7242 7916.045 L 1351.0676 7916.045 Z" fill="#ffb23f"/>
+        </g>
+      </g>
+      <g id="Graphic_178">
+        <text transform="translate(1302.3005 7923.343)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="13" fill="white" x="6288303e-19" y="12">Auticuro</tspan>
+        </text>
+      </g>
+      <g id="Group_204">
+        <g id="Graphic_173" filter="url(#Shadow)">
+          <path d="M 1234.3435 7717 L 1314.7005 7717 C 1317.4619 7717 1319.7005 7719.239 1319.7005 7722 L 1319.7005 7752.8205 C 1319.7005 7755.582 1317.4619 7757.8205 1314.7005 7757.8205 L 1234.3435 7757.8205 C 1231.5821 7757.8205 1229.3435 7755.582 1229.3435 7752.8205 L 1229.3435 7722 C 1229.3435 7719.239 1231.5821 7717 1234.3435 7717 Z" fill="#e3dddc"/>
+          <text transform="translate(1234.3435 7722.046)" fill="black">
+            <tspan font-family="Helvetica Neue" font-size="13" fill="black" x="14.529493" y="12">Payment </tspan>
+            <tspan font-family="Helvetica Neue" font-size="13" fill="black" x="18.383993" y="27.364">System</tspan>
+          </text>
+        </g>
+        <g id="Graphic_175" filter="url(#Shadow)">
+          <path d="M 1347.7555 7717 L 1428.1125 7717 C 1430.8739 7717 1433.1125 7719.239 1433.1125 7722 L 1433.1125 7752.8205 C 1433.1125 7755.582 1430.8739 7757.8205 1428.1125 7757.8205 L 1347.7555 7757.8205 C 1344.994 7757.8205 1342.7555 7755.582 1342.7555 7752.8205 L 1342.7555 7722 C 1342.7555 7719.239 1344.994 7717 1347.7555 7717 Z" fill="#e3dddc"/>
+          <text transform="translate(1347.7555 7722.046)" fill="black">
+            <tspan font-family="Helvetica Neue" font-size="13" fill="black" x="18.747993" y="12">Trading</tspan>
+            <tspan font-family="Helvetica Neue" font-size="13" fill="black" x="18.383993" y="27.364">System</tspan>
+          </text>
+        </g>
+        <g id="Graphic_176" filter="url(#Shadow)">
+          <path d="M 1117.72 7717 L 1198.077 7717 C 1200.8384 7717 1203.077 7719.239 1203.077 7722 L 1203.077 7752.8205 C 1203.077 7755.582 1200.8384 7757.8205 1198.077 7757.8205 L 1117.72 7757.8205 C 1114.9585 7757.8205 1112.72 7755.582 1112.72 7752.8205 L 1112.72 7722 C 1112.72 7719.239 1114.9585 7717 1117.72 7717 Z" fill="#e3dddc"/>
+          <text transform="translate(1117.72 7722.046)" fill="black">
+            <tspan font-family="Helvetica Neue" font-size="13" fill="black" x="20.437993" y="12">Crypto</tspan>
+            <tspan font-family="Helvetica Neue" font-size="13" fill="black" x="11.409493" y="27.364">Exchange</tspan>
+          </text>
+        </g>
+        <g id="Graphic_179" filter="url(#Shadow)">
+          <path d="M 1464.379 7717 L 1544.736 7717 C 1547.4974 7717 1549.736 7719.239 1549.736 7722 L 1549.736 7752.8205 C 1549.736 7755.582 1547.4974 7757.8205 1544.736 7757.8205 L 1464.379 7757.8205 C 1461.6176 7757.8205 1459.379 7755.582 1459.379 7752.8205 L 1459.379 7722 C 1459.379 7719.239 1461.6176 7717 1464.379 7717 Z" fill="#e3dddc"/>
+          <text transform="translate(1464.379 7722.046)" fill="black">
+            <tspan font-family="Helvetica Neue" font-size="13" fill="black" x="2.8489935" y="12">E-commerce</tspan>
+            <tspan font-family="Helvetica Neue" font-size="13" fill="black" x="15.621493" y="27.364">Platform</tspan>
+          </text>
+        </g>
+        <g id="Graphic_180" filter="url(#Shadow)">
+          <path d="M 1571.5466 7717 L 1651.9036 7717 C 1654.665 7717 1656.9036 7719.239 1656.9036 7722 L 1656.9036 7752.8205 C 1656.9036 7755.582 1654.665 7757.8205 1651.9036 7757.8205 L 1571.5466 7757.8205 C 1568.7852 7757.8205 1566.5466 7755.582 1566.5466 7752.8205 L 1566.5466 7722 C 1566.5466 7719.239 1568.7852 7717 1571.5466 7717 Z" fill="#e3dddc"/>
+          <text transform="translate(1571.5466 7722.046)" fill="black">
+            <tspan font-family="Helvetica Neue" font-size="13" fill="black" x="26.092993" y="12">Card </tspan>
+            <tspan font-family="Helvetica Neue" font-size="13" fill="black" x="7.5614935" y="27.364">Processors</tspan>
+          </text>
+        </g>
+        <g id="Graphic_181" filter="url(#Shadow)">
+          <path d="M 1001.0964 7717 L 1081.4534 7717 C 1084.2148 7717 1086.4534 7719.239 1086.4534 7722 L 1086.4534 7752.8205 C 1086.4534 7755.582 1084.2148 7757.8205 1081.4534 7757.8205 L 1001.0964 7757.8205 C 998.335 7757.8205 996.0964 7755.582 996.0964 7752.8205 L 996.0964 7722 C 996.0964 7719.239 998.335 7717 1001.0964 7717 Z" fill="#e3dddc"/>
+          <text transform="translate(1001.0964 7729.728)" fill="black">
+            <tspan font-family="Helvetica Neue" font-size="13" fill="black" x="25.247993" y="12">Bank</tspan>
+          </text>
+        </g>
+      </g>
+      <g id="Group_203">
+        <g id="Graphic_190" filter="url(#Shadow)">
+          <path d="M 1066.23 8004.68 L 1126.7856 8004.68 C 1129.547 8004.68 1131.7856 8006.918 1131.7856 8009.68 L 1131.7856 8040.5 C 1131.7856 8043.261 1129.547 8045.5 1126.7856 8045.5 L 1066.23 8045.5 C 1063.4686 8045.5 1061.23 8043.261 1061.23 8040.5 L 1061.23 8009.68 C 1061.23 8006.918 1063.4686 8004.68 1066.23 8004.68 Z" fill="#fff8f7"/>
+          <text transform="translate(1066.23 8017.408)" fill="black">
+            <tspan font-family="Helvetica Neue" font-size="13" fill="black" x="15.23029" y="12">Cash</tspan>
+          </text>
+        </g>
+        <g id="Graphic_191" filter="url(#Shadow)">
+          <path d="M 1159.6742 8004.68 L 1220.2298 8004.68 C 1222.9912 8004.68 1225.2298 8006.918 1225.2298 8009.68 L 1225.2298 8040.5 C 1225.2298 8043.261 1222.9912 8045.5 1220.2298 8045.5 L 1159.6742 8045.5 C 1156.9128 8045.5 1154.6742 8043.261 1154.6742 8040.5 L 1154.6742 8009.68 C 1154.6742 8006.918 1156.9128 8004.68 1159.6742 8004.68 Z" fill="#fff8f7"/>
+          <text transform="translate(1159.6742 8017.408)" fill="black">
+            <tspan font-family="Helvetica Neue" font-size="13" fill="black" x="13.42329" y="12">Stock</tspan>
+          </text>
+        </g>
+        <g id="Graphic_193" filter="url(#Shadow)">
+          <path d="M 1526.2144 8004.68 L 1586.77 8004.68 C 1589.5314 8004.68 1591.77 8006.918 1591.77 8009.68 L 1591.77 8040.5 C 1591.77 8043.261 1589.5314 8045.5 1586.77 8045.5 L 1526.2144 8045.5 C 1523.453 8045.5 1521.2144 8043.261 1521.2144 8040.5 L 1521.2144 8009.68 C 1521.2144 8006.918 1523.453 8004.68 1526.2144 8004.68 Z" fill="#fff8f7"/>
+          <text transform="translate(1526.2144 8017.408)" fill="black">
+            <tspan font-family="Helvetica Neue" font-size="13" fill="black" x="14.62579" y="12">Bond</tspan>
+          </text>
+        </g>
+        <g id="Graphic_192" filter="url(#Shadow)">
+          <path d="M 1433.7937 8004.68 L 1494.3493 8004.68 C 1497.1107 8004.68 1499.3493 8006.918 1499.3493 8009.68 L 1499.3493 8040.5 C 1499.3493 8043.261 1497.1107 8045.5 1494.3493 8045.5 L 1433.7937 8045.5 C 1431.0323 8045.5 1428.7937 8043.261 1428.7937 8040.5 L 1428.7937 8009.68 C 1428.7937 8006.918 1431.0323 8004.68 1433.7937 8004.68 Z" fill="#fff8f7"/>
+          <text transform="translate(1433.7937 8017.408)" fill="black">
+            <tspan font-family="Helvetica Neue" font-size="13" fill="black" x="10.53729" y="12">Crypto</tspan>
+          </text>
+        </g>
+        <g id="Graphic_194" filter="url(#Shadow)">
+          <path d="M 1248.9522 8004.68 L 1309.5078 8004.68 C 1312.2692 8004.68 1314.5078 8006.918 1314.5078 8009.68 L 1314.5078 8040.5 C 1314.5078 8043.261 1312.2692 8045.5 1309.5078 8045.5 L 1248.9522 8045.5 C 1246.1908 8045.5 1243.9522 8043.261 1243.9522 8040.5 L 1243.9522 8009.68 C 1243.9522 8006.918 1246.1908 8004.68 1248.9522 8004.68 Z" fill="#fff8f7"/>
+          <text transform="translate(1248.9522 8017.408)" fill="black">
+            <tspan font-family="Helvetica Neue" font-size="13" fill="black" x="12.70179" y="12">Credit</tspan>
+          </text>
+        </g>
+        <g id="Graphic_195" filter="url(#Shadow)">
+          <path d="M 1341.373 8004.68 L 1401.9285 8004.68 C 1404.69 8004.68 1406.9285 8006.918 1406.9285 8009.68 L 1406.9285 8040.5 C 1406.9285 8043.261 1404.69 8045.5 1401.9285 8045.5 L 1341.373 8045.5 C 1338.6115 8045.5 1336.373 8043.261 1336.373 8040.5 L 1336.373 8009.68 C 1336.373 8006.918 1338.6115 8004.68 1341.373 8004.68 Z" fill="#fff8f7"/>
+          <text transform="translate(1341.373 8017.408)" fill="black">
+            <tspan font-family="Helvetica Neue" font-size="13" fill="black" x="7.04029" y="12">Coupon</tspan>
+          </text>
+        </g>
+      </g>
+      <g id="Graphic_205">
+        <text transform="translate(1285.459 7837.007)" fill="white">
+          <tspan font-family="Helvetica Neue" font-size="13" fill="white" x="0" y="12">Wallet Service</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

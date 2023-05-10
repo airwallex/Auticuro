@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[9909],{3820:e=>{e.exports=JSON.parse('{"title":"Evaluation","slug":"/category/evaluation","permalink":"/Auticuro/docs/category/evaluation","navigation":{"previous":{"title":"FAQ","permalink":"/Auticuro/docs/FAQ"},"next":{"title":"Overview","permalink":"/Auticuro/docs/Evaluation/Overview"}}}')}}]);
