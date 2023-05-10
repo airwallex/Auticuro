@@ -6,7 +6,7 @@ sidebar_position: 5
 **`EventsInSeqRange(start_seq_num: u64, end_seq_num: u64)`**
 
 ### Description
-`EventsInSeqRange` retrieves all the events with consecutive sequence number in range of *[start_seq_num, end_seq_num)*.
+`EventsInSeqRange` retrieves all the events with consecutive sequence number in range of _[start_seq_num, end_seq_num)_.
 Partial results are returned if the input seq_num is out of system's available range.
 
 ### Definitions

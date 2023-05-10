@@ -8,11 +8,11 @@ sidebar_position: 0
 
 ### Description
 
-Given *<seq_num, account_id>*, `AccountBalance` returns balances for the account_id at input seq_num. Returned 
-balances consist of available, reservation, pending_in, and pending_out.
+Given *<seq_num, account_id>*, `AccountBalance` returns balances for the _account_id_ at input _seq_num_. Returned 
+balances consist of _available_, _reservation_, _pending_in_, and _pending_out_.
 
 *seq_num* is used for read-after-write consistency guarantee. If the query side's last seen seq_num is smaller than the input one,
-an error message of **NotAvailable** is returned. If input *seq_num* is 0,  the latest balance is returned without seq_num
+an error message of **NotAvailable** is returned. If input *seq_num* is 0,  the latest balance is returned without _seq_num_
 check.
 
 ### Definitions

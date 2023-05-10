@@ -6,7 +6,7 @@ sidebar_position: 2
 Increase/decrease the balance of multiple accounts in a single request. Checks are performed 
 for each account:
 - The account is in `Normal` state
-- The account balance after the request handling is within the `[lower limit, upper limit]`
+- The account balance after the request handling is within the _[lower limit, upper limit]_
 - The account currency is the same as the currency in the request
 
 ### Usage Scenario
@@ -14,10 +14,10 @@ for each account:
 A list of unilateral money increasing/decreasing operations
 
 - Advanced Usage:
-Set the `Precondition preconditions` to implement an optimistic lock. All the `preconditions` 
+Set the `Precondition preconditions` to implement an optimistic lock. All the _preconditions_ 
 will be checked before the request handling. If any of the preconditions fails, the request will
 fail. 
-The `BalanceCheck` precondition is provided to check: the balance of an account == expected_balance
+The `BalanceCheck` precondition is provided to check: the balance of an account == _expected_balance_
 
 ```protobuf
 message BatchBalanceOperationRequest {

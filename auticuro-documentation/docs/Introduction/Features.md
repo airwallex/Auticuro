@@ -18,7 +18,7 @@ performance and versatility:
     - ✅ Change the upper/lower balance limit of an account
 - ✅ Support multi asset class (cash, crypto, coupon…)
 - ✅ Support Balance history query
-- Support account hierarchy(TBD)
+- ☐ Support account hierarchy(TBD)
 
 ## Non-functional Features
 - **High throughput**: Separated reads and writes, no lock on the critical write path

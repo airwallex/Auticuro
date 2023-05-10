@@ -7,7 +7,7 @@ sidebar_position: 6
 **`EventsInTimeRange(start_timestamp: Timestamp, end_timestamp: Timestamp)`**
 
 ### Description
-`EventsInTimeRange` retrieves all the events with consecutive sequence number in between *[start_timestamp, end_timestamp)*.
+`EventsInTimeRange` retrieves all the events with consecutive sequence number in between _[start_timestamp, end_timestamp)_.
 Partial results are returned if the input timestamp is out of system's available range. Input timestamp supports
 human-readable time with timezone as well as Unix Epoch. 
 

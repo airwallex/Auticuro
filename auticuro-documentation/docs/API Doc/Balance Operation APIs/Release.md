@@ -7,10 +7,10 @@ The Release allows releasing an amount of money within an account from the corre
 reservations.
 Checks include:
 - The account is in `Normal` state
-- The account balance after the request handling is within the `[lower limit, upper limit]`
-- The `reservation_id` must exist, and the reserved `amount` will be released from the existing reservation.
-- If `amount` is not provided, release all the reserved money; otherwise, release the specified 
-  amount from reserved to available.
+- The account balance after the request handling is within the _[lower limit, upper limit]_
+- The _reservation_id_ must exist, and the reserved _amount_ will be released from the existing reservation
+- If _amount_ is not provided, release all the reserved money; otherwise, release the specified 
+  amount from reserved to available
 
 ```protobuf
 message ReleaseRequest {

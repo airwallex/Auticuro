@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## What is Auticuro?
 **Auticuro** is a combination of two words: **Au** and **Curo**. **Au** means gold in Latin(aurum) and
-**Curo** means protect in Italian.
+**Curo** means protect in Italian, thus **Auticuro** means protection of your gold.
 
 **Auticuro** is a high performance, strong consistent, distributed wallet service fitting for mission-critical financial
 applications. It provides account management and balance operation functionalities, which could be used to build composite
@@ -19,14 +19,23 @@ ensure atomicity for multiple balance operations.
 and high-availability(RTO <= **4s** for fault recovery), which make it a suitable cornerstone for critical financial
 applications.
 
+![image info](@site/static/img/evaluation/latency_distribution.gif)
+
 ## Who can use Auticuro?
 ![image info](@site/static/img/overview/Auticuro-use-cases.svg)
 
-- A wallet service that tracks the balance and history of wallets, can be used by Banks, Fintech companies, 
-  E-commerce platforms, etc.
-- An app to track UTXO of cryptocurrencies
-- A financial instrument repo that tracks the position and history of stock, bond, future, option, credit
-- A settlement solution for clearing house to ensure simultaneous exchange between two counterparties
+- **E-commerce Platforms**: Auticuro can facilitate seamless transactions between buyers and sellers,
+  ensuring secure and accurate money transfers, even during peak traffic times.
+- **Cryptocurrency Wallets**: With support for multiple asset classes, Auticuro can act as a reliable
+  wallet service for managing and tracking various cryptocurrencies, providing users with an intuitive and efficient experience.
+- **Fintech Applications**: Auticuro's advanced features can be integrated into fintech applications,
+  offering enhanced account management, transaction tracking, and analytics capabilities for businesses and end-users.
+- **Banking and Financial Institutions**: Auticuro can streamline account management and balance
+  operations for banks and financial institutions, enabling them to offer their customers a modern and user-friendly experience.
+- **Loyalty Programs and Coupons**: Auticuro can be utilized to manage and track customer loyalty
+  programs, coupons, and reward points, providing businesses with an efficient and transparent system to incentivize customer engagement.
+- **Cross-border Money Transfers**: Auticuro can facilitate fast and secure cross-border transactions,
+  making it an ideal solution for businesses and individuals who need to send and receive funds internationally.
 
 ## Auticuro Features Overview
 **Functional:**
